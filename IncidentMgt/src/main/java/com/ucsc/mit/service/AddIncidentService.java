@@ -48,7 +48,7 @@ import com.ucsc.mit.model.UnitMember;
 @ManagedBean(name="addIncidentService")
 @SessionScoped
 public class AddIncidentService{
-	
+	//AddIncidentService
 	private String isNew="I";
 	private String loggedUser;
 	private String loggedUserLevel;
