@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2021-09-03T13:13:56 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reopened_Incidents_Summary" pageWidth="936" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="896" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryNewPage="true" isSummaryWithPageHeaderAndFooter="true" uuid="43446bfc-e271-4dcb-8da7-d564d3bd1623">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="INCIDENT_MANAGEMENT"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="inch"/>
+	<parameter name="dateTo" class="java.lang.String"/>
+	<parameter name="dateFrom" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="wrc" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="query" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["SELECT * FROM RP_REOPENED_INC_SUMMARY_V WHERE "+$P{wrc}+" "]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LoginUser" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="INCIDENT_NUMBER" class="java.math.BigDecimal"/>
+	<field name="CREATED_DATE" class="java.sql.Timestamp"/>
+	<field name="ASSIGNED_DATE_TIME" class="java.sql.Timestamp"/>
+	<field name="UNIT_NAME" class="java.lang.String"/>
+	<field name="IMPACT_LVL_NAME" class="java.lang.String"/>
+	<field name="URGENCY_NAME" class="java.lang.String"/>
+	<field name="INI_DATE_TIME" class="java.sql.Timestamp"/>
+	<field name="REOPN_DATE_TIME" class="java.sql.Timestamp"/>
+	<field name="REOPEN_BY" class="java.lang.String"/>
+	<field name="REOPENLVL" class="java.lang.String"/>
+	<field name="STATUS_REMARK" class="java.lang.String"/>
+	<field name="STATUS" class="java.lang.String"/>
+	<field name="MODIFIED_BY" class="java.lang.String"/>
+	<field name="MODIFIED_DATE" class="java.sql.Timestamp"/>
+	<field name="CREATED_BY" class="java.lang.String"/>
+	<field name="REOPEN_REASON" class="java.lang.String"/>
+	<field name="CURRENT_PROG" class="java.lang.String"/>
+	<variable name="V_CURRENT_PAGE_NUMBER" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+	</variable>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{IMPACT_LVL_NAME}]]></groupExpression>
+		<groupHeader>
+			<band height="21">
+				<staticText>
+					<reportElement x="1" y="3" width="114" height="17" uuid="8de457d1-849d-45cf-baf8-7fd666a9dbb7"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Impact level name :]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="115" y="3" width="165" height="17" uuid="574590ea-c83a-46e2-bb2e-05d3a54d3354"/>
+					<textFieldExpression><![CDATA[$F{IMPACT_LVL_NAME}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="3"/>
+		</groupFooter>
+	</group>
+	<group name="Group2">
+		<groupExpression><![CDATA[$F{URGENCY_NAME}]]></groupExpression>
+		<groupHeader>
+			<band height="24">
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="115" y="2" width="165" height="17" uuid="ce6e11bd-629a-4b6e-8add-0adcfe89c0df"/>
+					<textFieldExpression><![CDATA[$F{URGENCY_NAME}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="2" width="114" height="17" uuid="79462004-c78c-46bc-90d4-a1ff33dab006"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Urgency name       : ]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="4"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<textField>
+				<reportElement x="5" y="53" width="881" height="16" uuid="e39ff55e-ab0d-4552-ac00-1c0737d7586c"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA["From : "+$P{dateFrom}+"     To :  "+$P{dateTo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="5" y="28" width="881" height="25" uuid="a861d747-4e77-4804-bed1-a5fa4d5167bc"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["REOPEND INCIDENT SUMMARY REPORT  "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="3" width="881" height="25" uuid="f53bd663-ca87-4e3a-9fcb-b7f18e604612">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PEOPLE'S BANK ]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="10" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="37" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="60" height="30" uuid="7cb9975a-68cc-4c01-9d21-f39730d7217d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Incident Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="61" y="0" width="80" height="30" uuid="a1095f53-e105-41d4-b2ae-3e4d3b8463b1"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Created & Time]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="0" width="81" height="30" uuid="6eeb5900-edfd-4efc-94f4-0bf87706ab62"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Assigned (to Unit) Date & Time]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="0" width="70" height="30" uuid="bb7ab8c4-ec5d-43d5-8d43-326c6c67809a"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Assigned Unit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="289" y="0" width="70" height="30" uuid="8191fca9-bf84-4f37-9fa7-115a14ba676e"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Impact Level]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="0" width="60" height="30" uuid="ebf139df-d32e-4068-9be4-6816de8a8abd"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Urgency]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="417" y="0" width="73" height="30" uuid="2c0aa4c7-2180-4cee-b121-b68336d5000f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Initial Resolved Date & Time]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="491" y="2" width="75" height="30" uuid="8d7ebbec-e12f-4f2d-a890-88de995465ec"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reopened Date & Time]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="568" y="2" width="70" height="30" uuid="296c43d6-c651-42df-8a5e-e5851e592548"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reopened By]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="638" y="2" width="64" height="30" uuid="3ea634a5-d533-423a-9fb8-52f93b7044d1"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reopened user's Level]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="704" y="2" width="60" height="30" uuid="8186b8e5-947a-47c9-8c65-6bf7ae607fcf"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reopened Reason]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="766" y="3" width="60" height="30" uuid="e416a4f0-721b-415a-b506-3e5f53dee165"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Current Progress]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="828" y="3" width="60" height="30" uuid="5f902c31-e9f4-4350-b189-678493659ff5"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Progress Updated By]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="30" width="888" height="3" uuid="bc28a912-ba1a-445a-966f-a06ba8021644"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="3" width="59" height="15" uuid="3d021f92-d525-411a-b8fe-f9787f526bec"/>
+				<textFieldExpression><![CDATA[$F{INCIDENT_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="61" y="3" width="79" height="15" uuid="cc3139a2-7926-4919-a514-571f572945f6"/>
+				<textFieldExpression><![CDATA[$F{CREATED_DATE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="140" y="3" width="81" height="15" uuid="15bce432-1ffb-4b5a-a93a-8c07fa583372"/>
+				<textFieldExpression><![CDATA[$F{ASSIGNED_DATE_TIME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="220" y="3" width="70" height="15" uuid="cce0f5f3-4678-492f-b842-c92c90862579"/>
+				<textFieldExpression><![CDATA[$F{UNIT_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="290" y="3" width="69" height="15" uuid="8092d720-3054-457d-8750-7344af6811c5"/>
+				<textFieldExpression><![CDATA[$F{IMPACT_LVL_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="358" y="3" width="59" height="15" uuid="bfbc29e4-99dc-4220-be4e-50a3a15995e5"/>
+				<textFieldExpression><![CDATA[$F{URGENCY_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="418" y="3" width="72" height="15" uuid="59ffdaa2-7f23-4eb3-b397-456b8482c72a"/>
+				<textFieldExpression><![CDATA[$F{INI_DATE_TIME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="492" y="3" width="74" height="15" uuid="09a657f4-58a3-44d3-b04f-01a3de80cb42"/>
+				<textFieldExpression><![CDATA[$F{REOPN_DATE_TIME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="568" y="3" width="70" height="15" uuid="2275e81b-3063-4ad2-92b0-1bf5a16344a4"/>
+				<textFieldExpression><![CDATA[$F{REOPEN_BY}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="638" y="3" width="64" height="15" uuid="9aeebd10-c9c0-4515-b0a7-9649272b758d"/>
+				<textFieldExpression><![CDATA[$F{REOPENLVL}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="826" y="4" width="60" height="15" uuid="d819dd77-33a4-42d9-ac7e-d917f6454a7e"/>
+				<textFieldExpression><![CDATA[$F{MODIFIED_BY}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="704" y="4" width="60" height="15" uuid="b104fe3b-9b03-4170-8ff9-947d9a936e1e"/>
+				<textFieldExpression><![CDATA[$F{REOPEN_REASON}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="768" y="3" width="58" height="15" uuid="c1755691-b068-4c5c-aa94-ed569c30bff7"/>
+				<textFieldExpression><![CDATA[$F{CURRENT_PROG}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="26" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="1" y="2" width="70" height="16" uuid="d87c1d39-2337-48c3-9f28-a57f5a423a3e"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="h:mm a">
+				<reportElement x="72" y="2" width="68" height="16" uuid="fc77fe86-24ba-4a26-8fed-42ce59a9633b"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" evaluationTime="Auto" isBlankWhenNull="true">
+				<reportElement x="415" y="3" width="100" height="17" uuid="ae406cf5-a564-403c-916f-a59fbb00cb88"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["Page "+$V{V_CURRENT_PAGE_NUMBER}+" of "+$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="807" y="0" width="81" height="16" uuid="6bca5d60-8883-41d0-84f1-9e82b591cb5d"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{LoginUser}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

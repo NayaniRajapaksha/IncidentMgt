@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+</h:head>
+<h:body>
+<ui:composition template="comTemplate.xhtml"> 
+
+	<ui:define name="content"> 
+		<div id="messages-container">
+			<div id="messages">
+					<p>Manage Dependency</p>
+			</div>
+		</div>
+		
+		<div  style="margin:15px 15px;">
+			<h:form id="form1">	
+	
+		    	<div class="panel panel-default">
+		  			<div class="panel-body">
+		  				<div class="row">
+							<div class="col-sm">
+							
+									
+									
+									<h:commandButton id="cbb" action="#{dependencytService.back()}" class="btn btn-primary btn-sm" name="btn-back" value='Back'>
+									</h:commandButton>
+							</div>
+						</div>
+					</div>  
+		  		 </div>
+		  		 
+		  		 <div class="panel panel-default">
+  				<div class="panel-body">
+				<div class="row ">
+				<div class="col-sm">
+				
+				<table id="example" class="display" style="width:100%">
+					           <thead>
+					            <tr >
+					            	<th class="small" >Dependency No</th>
+					                <th class="small" >Dependency Created Date</th>
+					                <th class="small" >Dependency Status</th>
+					                <th class="small" >Priority</th>
+					                <th class="small" >Unit Name</th>
+					         		<th class="small" >Incident No</th>
+					              	<th class="small" ></th>
+					            </tr>
+					        </thead>
+					        <tbody>
+					        <ui:repeat value="${dependencytService.listAllDependency()}" var="dep">
+								<tr>
+									<td class="small">${dep.dependency_id}</td>
+									<td class="small">${dep.created_date}</td>
+									<td class="small">${dep.dep_satus_name}</td>
+									<td class="small">${dep.priority_name}</td>
+									<td class="small">${dep.unit_name}</td>
+									<td class="small">${dep.incident_id}</td>
+									<td class="small"  style="width:20%"><h:commandButton id="cb3" value="View" name="btn-edit-incType" action="#{dependencytService.getIncidentDataByID(dep.dependency_id,dep.incident_id)}" class="btn btn-primary btn-xs"
+									disabled="#{faqService.getIsNew() eq 'N'}"    >
+									</h:commandButton></td>
+									
+									
+								
+								</tr>
+							</ui:repeat>
+					            		   
+  				   			  </tbody>
+					        <tfoot>
+					            <tr >
+					               	<th class="small" >Dependency No</th>
+					                <th class="small" >Dependency Created Date</th>
+					                <th class="small" >Dependency Status</th>
+					                <th class="small" >Priority</th>
+					                <th class="small" >Unit Name</th>
+					         		<th class="small" >Incident No</th>
+					              	<th class="small" ></th>
+					            </tr>
+					        </tfoot>
+					       
+					</table>
+					
+				</div>
+				</div>
+				</div>
+			</div>
+			
+		  	</h:form>	
+		  	
+		  	 
+	<h:form id="formDep">
+	
+	  <p:messages id="messages" showDetail="true"  closable="true" autoUpdate="true"> </p:messages> 
+	<p:outputPanel id="form2Panel"  style="font-size:12px" rendered="#{dependencytService.getIsNew() eq 'V'}" >
+  	<div class="panel panel-danger" id="formData"  >
+		<c:if test="#{dependencytService.getIsNew() eq 'V'}">
+			<div class="panel-heading" id="x"> View Dependency</div>
+		</c:if>
+		
+    		<div class="panel-body">  
+		
+			<h5>Incident Detail</h5>	
+			<h:panelGrid columns="9" >
+			
+			<h:outputLabel for="inNo">&nbsp;Incident No:</h:outputLabel>
+			<h:inputText value="#{dependencytService.incidentNo}" id="inNo" 
+			disabled="true"></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;Impact level:&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{dependencytService.impactLevel}" id="impact" disabled="true"></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel >&nbsp;Urgency:</h:outputLabel>
+			<h:inputText value="#{dependencytService.urgency}" id="urgency" disabled="true"></h:inputText>
+		
+			<br/>
+			<br/>
+			<h:outputLabel for="status">&nbsp;Status:</h:outputLabel>
+			<h:inputText value="#{dependencytService.status}" id="status" 
+			disabled="true"></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;Root cause:&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{dependencytService.rootCause}" id="rCause" disabled="true"></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			<br/>
+			</h:panelGrid>
+		
+		<p:separator/>
+		 <h5>Dependency Detail</h5>
+		 <br/>
+		 <h:panelGrid columns="9" > 
+			<h:outputLabel>&nbsp;Dependency No:</h:outputLabel>
+			<h:inputText value="#{dependencytService.dependencyNo}" id="depNo" disabled="true"></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel >&nbsp;&nbsp;Created Date:&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{dependencytService.dCreatedDate}" id="depDate" disabled="true"></h:inputText>
+			<h:outputLabel >&nbsp;&nbsp;&nbsp;</h:outputLabel>			
+			<h:outputLabel >&nbsp;Priority:</h:outputLabel>
+			<h:inputText value="#{dependencytService.dPriority}" id="depPriprity" disabled="true"></h:inputText>
+			<br/>
+			<br/>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel >&nbsp;Working Days:</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel >&nbsp;Hours:</h:outputLabel>
+			<h:outputLabel >&nbsp;&nbsp;&nbsp;Minitues:</h:outputLabel>	
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+					
+			
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			<br/>
+			
+			<h:outputLabel >&nbsp;Target Completion time:</h:outputLabel>
+			<h:inputText value="#{dependencytService.workingDays}" id="twd" disabled="true"></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{dependencytService.hours}" id="thours" disabled="true"></h:inputText>
+			<h:outputLabel >&nbsp;&nbsp;&nbsp;<h:inputText value="#{dependencytService.minutes}" id="tmin" disabled="true"></h:inputText></h:outputLabel>	
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+					
+			
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			<br/>
+			<h:outputLabel >&nbsp;Description:&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{dependencytService.depDescription}" id="depDes" disabled="true"></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>			
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			<br/>
+			<br/>
+			
+		 </h:panelGrid>	
+		<p:separator/>
+		 <h5>Incident Dependency Assignment</h5>
+		 <br/>
+		 <h:panelGrid columns="9" > 
+		 <h:outputLabel for="unit"><h:outputText style="color:red" value=" *"/>&nbsp;Dependency Assigned Unit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputText value="#{dependencytService.unitName}" id="unit" disabled="true" >
+			</h:outputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>	
+			<h:outputLabel for="unitMembers"><h:outputText style="color:red" value=" *"/>&nbsp;Assign Dependency To:</h:outputLabel>
+			<h:selectOneMenu id="unitMembers" value="#{dependencytService.assignMember}" 
+						requiredMessage="Select Team Member"  autoSubmit="true"
+						style="font-size:12px; width:200px;">
+						<f:selectItem itemLabel="Select Team Member"
+							noSelectionOption="true" />
+						<f:selectItems var="rnl"
+							value="#{dependencytService.getUnitMemberValues().entrySet()}"
+							itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+						
+			</h:selectOneMenu>		
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel ></h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+		 </h:panelGrid>	
+		 <p:outputPanel id="depActionPanel"  style="font-size:12px"  rendered="#{dependencytService.depActionVisibility eq 'Y'}">
+		 <p:separator/>
+		 <h5>Dependency Actions</h5>
+		 <br/>
+		 <h:panelGrid columns="9" > 
+		 
+			<h:outputLabel for="depStatus"><h:outputText style="color:red" value=" *"/>&nbsp;Status:</h:outputLabel>
+			<h:selectOneMenu id="depStatus" value="#{dependencytService.depStatus}" 
+						requiredMessage="Select Status"  autoSubmit="true"
+						style="font-size:12px; width:200px;">
+						<f:selectItem itemLabel="Select Status"
+							noSelectionOption="true" />
+						<f:selectItems var="rnl"
+							value="#{dependencytService.getDepStatusListValue().entrySet()}"
+							itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+						
+			</h:selectOneMenu>	
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>		
+			<h:outputLabel for="sUpDate"><h:outputText style="color:red" value=" *"/>&nbsp;Status Updated Date:</h:outputLabel>
+			<p:calendar	    binding="#{passSUpDate}"
+						value="#{dependencytService.statusUpDate}" 
+						pattern="dd/MM/yyyy"
+						maxdate="#{dependencytService.today}" id="sUpDate" required="true"
+						requiredMessage="Value is required"
+						converterMessage="test">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+						<p:ajax 
+							event="dateSelect" />
+			</p:calendar>
+			
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel ></h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			<br/>
+			<h:outputLabel >&nbsp;Action Taken:&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{dependencytService.depAction}" id="depAct" ></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>			
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			<br/>
+		 </h:panelGrid>	
+		 </p:outputPanel>
+		<h:commandButton class="btn btn-primary btn-sm"  value="Assign" rendered="#{dependencytService.visibleAssignAction eq 'Y'? true:false}"  actionListener="#{dependencytService.assignToTeamMember()}"></h:commandButton>	
+		<h:commandButton style="margin:15px 15px;" class="btn btn-primary btn-sm"  type="button" onclick="PF('dlgC').show();"  rendered="#{dependencytService.visibleCloseAction eq 'Y'? true:false}"   value="Close Dependency" immediate="true" >
+
+		</h:commandButton>
+		<h:commandButton style="margin:15px 15px;" class="btn btn-primary btn-sm" rendered="#{dependencytService.visibleSaveAction eq 'Y'? true:false}" action="#{dependencytService.saveDependencyAction()}" value="Save" ></h:commandButton>
+		<h:commandButton style="margin:15px 15px;" class="btn btn-primary btn-sm"  value="Cancel"  action="#{dependencytService.cancel()}" immediate="true"></h:commandButton>
+	</div>
+  	</div>
+  </p:outputPanel>
+  		
+	
+	</h:form>	
+	
+	<h:form>
+        <p:dialog id="uClose" header="Close Dependency" widgetVar="dlgC" modal="true" >
+            <h:panelGrid columns="3" >
+    		<h:outputLabel for="uCReason"><h:outputText style="color:red" value=" *"/>&nbsp;Close Reason:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>		
+			<h:selectOneMenu id="uCReason" value="#{dependencytService.depCloseReason}" 
+						requiredMessage="Select Reason" required="true" 
+						 style="font-size:12px; width:200px;">
+						<f:selectItem itemLabel="Select Reason"
+							noSelectionOption="true" />
+						<f:selectItems var="rnl"
+							value="#{dependencytService.getDepCloseReasonListValue().entrySet()}"
+							itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+			</h:selectOneMenu>
+			<br/>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msguCReason" for="uCReason"   style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>			
+ 			
+    		<br/>
+    		
+    		</h:panelGrid>	
+    		<br/>
+    		<br/>
+    		<h:commandButton class="btn btn-primary btn-sm" action="#{dependencytService.closeDependency()}"  value="Save"  update="msguCReason" oncomplete="if (!args.validationFailed) PF('dlgC').hide();"></h:commandButton>
+            <h:commandButton style="margin:15px 15px;" class="btn btn-primary btn-sm" type="button" value="Close"  onclick="PF('dlgC').hide();"/>
+        </p:dialog>
+
+        
+    </h:form>	
+	</div>	
+	
+	 <script>
+
+		$(document).ready(function() {
+			
+		    $('#example').DataTable( {
+		        "pagingType": "full_numbers"
+		    } );
+		    
+		    
+		} );
+		
+
+
+		
+	</script>			
+   	</ui:define> 
+</ui:composition> 
+
+ </h:body>
+
+</html>

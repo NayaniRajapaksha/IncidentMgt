@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+</h:head>
+<h:body>
+<ui:composition template="comTemplate.xhtml"> 
+
+	<ui:define name="content"> 
+		<div id="messages-container">
+			<div id="messages">
+					<p>Manage Team Members</p>
+			</div>
+		</div>
+		
+		<div  style="margin:15px 15px;">
+			<h:form id="form1">	
+	
+		    	<div class="panel panel-default">
+		  			<div class="panel-body">
+		  				<div class="row">
+							<div class="col-sm">
+							
+									<h:commandButton id="cb1" action="#{unitMemberService.createNew()}" class="btn btn-primary btn-sm" name="btn-create-new-unitm" value='Create New'
+									disabled="#{unitMemberService.getIsNew() eq 'E'}">
+								
+									</h:commandButton>
+							</div>
+						</div>
+					</div>  
+		  		 </div>
+		  		 
+		  		 <div class="panel panel-default">
+  				<div class="panel-body">
+				<div class="row ">
+				<div class="col-sm">
+				
+				<table id="example" class="display" style="width:100%">
+					           <thead>
+					            <tr >
+					            	<th class="small" >Team Member</th>
+					                <th class="small" >Service No</th>
+					                <th class="small" ></th>
+					                
+					         
+					              
+					            </tr>
+					        </thead>
+					        <tbody>
+					        <ui:repeat value="${unitMemberService.listUnitMembers()}" var="employee">
+								<tr>
+									<td class="small">${employee.name}</td>
+									<td class="small">${employee.empId}</td>
+									
+									<td class="small"  style="width:20%"><h:commandButton id="cb5"  value="Delete" name="btn-delete-member" class="btn btn-danger btn-xs"
+									disabled="#{unitMemberService.getIsNew() eq 'N'}"  action="#{unitMemberService.deleteTeamMemberById(employee.id)}">
+ 										
+									
+									</h:commandButton></td>
+								</tr>
+							</ui:repeat>
+					            		   
+  				   			  </tbody>
+					        <tfoot>
+					            <tr >
+					               	<th class="small" >Team Member</th>
+					                <th class="small" >Service No</th>
+					                <th class="small" ></th>
+					                
+					            </tr>
+					        </tfoot>
+					       
+					</table>
+					
+				</div>
+				</div>
+				</div>
+			</div>
+		  	</h:form>	
+		  	
+		  	 
+	<h:form id="formAdd">
+	
+	 <p:messages id="messages" showDetail="true" closable="true" autoUpdate="true"> </p:messages>
+	<p:outputPanel id="form2Panel"  style="font-size:12px" rendered="#{unitMemberService.getIsNew() eq 'N' or unitMemberService.getIsNew() eq 'E'}">
+  	<div class="panel panel-danger" id="formData"  >
+
+		<div class="panel-heading" id="x"> Add Member</div>
+
+
+    		<div class="panel-body">  
+		<h:panelGrid columns="7" >
+			<h:outputLabel for="unit"><h:outputText style="color:red" value=" *"/>&nbsp;Unit:</h:outputLabel>
+			<h:selectOneMenu id="unit" value="#{unitMemberService.unitName}" 
+						requiredMessage="Select Unit" required="true" 
+						 style="font-size:12px; width:200px;">
+						<f:selectItem itemLabel="Select Unit"
+							noSelectionOption="true" />
+						<f:selectItems var="rnl"
+							value="#{faqService.getUnitValues().entrySet()}"
+							itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+			</h:selectOneMenu>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgUnit" for="unit"   style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			
+			<h:outputLabel for="sno"><h:outputText style="color:red" value=" *"/>&nbsp;Service No:</h:outputLabel>
+			<h:inputText value="#{unitMemberService.serviceNo}" id="sno"  
+			required="true" requiredMessage="Service No is Required">
+			 <f:ajax listener="#{unitMemberService.valueChangeServiceNo()}"  render="mname" />
+			</h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{unitMemberService.mName}" id="mname" disabled="true"></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgsno" for="sno" style="color: red"/>&nbsp;&nbsp;&nbsp; </h:outputLabel> 
+			<br/>
+			<br/>
+
+		</h:panelGrid>
+		<br/>
+		<br/>
+	
+		<h:commandButton class="btn btn-primary btn-sm"  value="Save"  actionListener="#{unitMemberService.addUnitMembers()}" ></h:commandButton>
+		<h:commandButton style="margin:15px 15px;" class="btn btn-primary btn-sm"  value="Cancel" action="#{unitMemberService.cancel()}" immediate="true"></h:commandButton>
+	</div>
+  	</div>
+  </p:outputPanel>
+  		
+	
+	</h:form>		
+	</div>	
+	
+	 <script>
+
+		$(document).ready(function() {
+			
+		    $('#example').DataTable( {
+		        "pagingType": "full_numbers"
+		    } );
+		    
+		    
+		} );
+		
+
+
+		
+	</script>			
+   	</ui:define> 
+</ui:composition> 
+
+ </h:body>
+
+</html>

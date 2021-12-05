@@ -1,0 +1,425 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+</h:head>
+<h:body>
+<ui:composition template="comTemplate.xhtml"> 
+
+	<ui:define name="content"> 
+		<div id="messages-container">
+			<div id="messages">
+					<p>Manage Incidents</p>
+			</div>
+		</div>
+		
+		<div  style="margin:15px 15px;">
+			<h:form >	
+	
+		    	<div class="panel panel-default">
+		  			<div class="panel-body">
+		  				<div class="row">
+							<div class="col-sm">
+							
+									<h:commandButton id="cb1" action="#{addIncidentService.createNew()}" class="btn btn-primary btn-sm" name="btn-create-new-unit" value='Create New Incident'
+									disabled="#{addIncidentService.getIsNew() eq 'E' or addIncidentService.getIsNew() eq 'V'}">
+									<p:resetInput target=":#{p:component('formAdd')}" /> 
+									</h:commandButton>
+							</div>
+						</div>
+					</div>  
+		  		 </div>
+		  		 
+		  		 		 <div class="panel panel-default">
+  				<div class="panel-body">
+				<div class="row ">
+				<div class="col-sm">
+				
+				<table id="example" class="display" style="width:100%">
+					           <thead>
+					            <tr >
+					            	<th class="small" >Created Date</th>
+					                <th class="small" >Incident No</th>
+					                <th class="small" >Incident Type</th>
+					                <th class="small" >Incident Sub Type</th>
+					                <th class="small" >Priority</th>
+					                <th class="small" >Incident Status</th>
+					               <th class="small" ></th>
+					                <th class="small" ></th>
+					                <th class="small" ></th>
+					                <th class="small" ></th>
+					              
+					            </tr>
+					        </thead>
+					        <tbody>
+					        <ui:repeat value="${addIncidentService.listAllIncidents()}" var="incident">
+								<tr>
+									<td class="small">${incident.createdDate}</td>
+									<td class="small">${incident.id}</td>
+									<td class="small">${incident.incTypeName}</td>
+									<td class="small">${incident.incSubTypeName}</td>
+									<td class="small">${incident.priorityName}</td>
+									<td class="small">${incident.incidentStatus}</td>
+									
+									
+									<td class="small"><h:commandButton id="cb1" action="#{addIncidentService.editIncidentDetailByID(incident.id)}" value="Edit" name="btn-edit-unit" class="btn btn-primary btn-xs"
+									disabled="#{addIncidentService.getIsNew() eq 'N' or incident.incidentStatus ne 'INITIAL'}" >
+ 									
+									</h:commandButton></td>
+									
+									<td class="small"><h:commandButton id="cb2" action="#{addIncidentService.progress(incident.id)}" value="Progress" name="btn-pr-in" class="btn btn-primary btn-xs"
+									disabled="#{addIncidentService.getIsNew() eq 'N' or incident.incidentStatus eq 'INITIAL'}" >
+ 									
+									</h:commandButton></td>
+									
+									<td class="small"><h:commandButton id="cb3" action="#{addIncidentService.deleteIncidentDetailByID(incident.id)}" value="Delete" name="btn-edit-unit" class="btn btn-primary btn-xs"
+									disabled="#{addIncidentService.getIsNew() eq 'N' or incident.incidentStatus ne 'INITIAL'}" >
+ 									
+									</h:commandButton></td>
+									
+									<td class="small"><h:commandButton id="cb4" action="#{addIncidentService.viewIncidentDetailByID(incident.id)}" value="View" name="btn-edit-unit" class="btn btn-primary btn-xs"
+									disabled="#{addIncidentService.getIsNew() eq 'N'}" >
+ 									
+									</h:commandButton></td>
+								</tr>
+							</ui:repeat>
+					            		   
+  				   			  </tbody>
+					        <tfoot>
+					            <tr >
+					               	<th class="small" >Created Date</th>
+					                <th class="small" >Incident No</th>
+					                <th class="small" >Incident Type</th>
+					                <th class="small" >Incident Sub Type</th>
+					                <th class="small" >Priority</th>
+					                <th class="small" >Incident Status</th>
+					               <th class="small" ></th>
+					                <th class="small" ></th>
+					                <th class="small" ></th>
+					                <th class="small" ></th>
+					            </tr>
+					        </tfoot>
+					       
+					</table>
+					
+				</div>
+				</div>
+				</div>
+			</div>
+		  	</h:form>	
+		  	
+		  	 
+	<h:form id="formAdd">
+	
+	 <p:messages id="messages" showDetail="true" closable="true" autoUpdate="true" rendered="#{unitIncidentService.getIsNew() ne 'P'}"> </p:messages> 
+	<p:outputPanel id="form2Panel"  style="font-size:12px"  rendered="#{addIncidentService.getIsNew() eq 'N' or addIncidentService.getIsNew() eq 'E' or addIncidentService.getIsNew() eq 'V'}">
+
+  	<div class="panel panel-danger" id="formData"  >
+   		<c:if test="#{addIncidentService.getIsNew() eq 'N'}">
+			<div class="panel-heading" id="x"> Add Incident</div>
+		</c:if>
+		<c:if test="#{addIncidentService.getIsNew() eq 'E'}">
+			<div class="panel-heading" id="x"> Edit Incident</div>
+		</c:if>
+		<c:if test="#{addIncidentService.getIsNew() eq 'V'}">
+			<div class="panel-heading" id="x"> View Incident</div>
+		</c:if>
+    		<div class="panel-body">  
+    	<h5>Incident Detail</h5>	
+		<h:panelGrid columns="9" >
+		
+			<h:outputLabel for="title"><h:outputText style="color:red" value=" *"/>&nbsp;Title:</h:outputLabel>
+			<h:inputText value="#{addIncidentService.title}" id="title" required="true" requiredMessage=" Title is required" 
+			disabled="#{addIncidentService.getIsNew() eq 'V'}"></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel for="priority">Priority:</h:outputLabel>
+			<h:selectOneMenu id="priority" value="#{addIncidentService.priorityLevel}" 
+						requiredMessage="Select priority level" required="true" 
+						 style="font-size:12px; width:200px;"
+						 disabled="#{addIncidentService.getIsNew() eq 'V'}">
+						<f:selectItem itemLabel="Select priority level"
+							noSelectionOption="true" />
+						<f:selectItems var="rnl"
+							value="#{addIncidentService.getPriorityLevelValues().entrySet()}"
+							itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+						 
+			</h:selectOneMenu>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel for="oDate">Incident Occurrence Date and Time:</h:outputLabel>
+			<p:calendar	 id="oDate"   binding="#{passTodate}"
+						value="#{addIncidentService.occuranceDate}" 
+						pattern="dd/MM/yyyy"
+						maxdate="#{addIncidentService.today}"  required="true"
+						requiredMessage="Value is required"
+						converterMessage="Please select a valid date"
+						 disabled="#{addIncidentService.getIsNew() eq 'V'}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+						<p:ajax 
+							event="dateSelect" />
+			</p:calendar>
+			
+		
+			<br/>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgtitle" for="title"   style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>			
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+		
+
+			<h:outputLabel for="area"><h:outputText style="color:red" value=" *"/>&nbsp;Technically Affected Area:</h:outputLabel>
+			<h:selectOneMenu id="area" value="#{addIncidentService.techAffect}" 
+						requiredMessage="Select technically affected area" required="true" 
+						 style="font-size:12px; width:200px;"
+						 disabled="#{addIncidentService.getIsNew() eq 'V'}">
+						<f:selectItem itemLabel="Select technically affected area"
+							noSelectionOption="true" />
+						<f:selectItems var="rnl"
+							value="#{addIncidentService.getTechAffectedAreaValues().entrySet()}"
+							itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+						
+			</h:selectOneMenu>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel for="process"><h:outputText style="color:red" value=" *"/>&nbsp;Affected Unit/Process:</h:outputLabel>
+			<h:inputText value="#{addIncidentService.affectedProcess}" id="process" required="true" requiredMessage="Affected Process is Required"
+			disabled="#{addIncidentService.getIsNew() eq 'V'}"></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel for="location"><h:outputText style="color:red" value=" *"/>&nbsp;Incident Location:</h:outputLabel>
+			<h:selectOneMenu id="location" value="#{addIncidentService.location}" 
+						requiredMessage="Select Incident Location" required="true" 
+						 style="font-size:12px; width:200px;"
+						 disabled="#{addIncidentService.getIsNew() eq 'V'}">
+						<f:selectItem itemLabel="Select Incident Location"
+							noSelectionOption="true" />
+						<f:selectItems var="rnl"
+							value="#{addIncidentService.getBranchValues().entrySet()}"
+							itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+			</h:selectOneMenu>
+			<br/>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgarea" for="area"   style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>			
+ 			<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>
+ 				<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgprocess" for="process"   style="color: red"/>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;<h:message id="msglocation" for="location"   style="color: red"/>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 		
+			<br/>
+			
+
+			<h:outputLabel for="inType"><h:outputText style="color:red" value=" *"/>&nbsp;Incident Type:</h:outputLabel>
+			<h:selectOneMenu id="inType" value="#{addIncidentService.typeName}" 
+						requiredMessage="Select incident type" required="true" 
+						 style="font-size:12px; width:200px;"
+						 disabled="#{addIncidentService.getIsNew() eq 'V'}">
+						<f:selectItem itemLabel="Select incident type"
+							noSelectionOption="true" />
+						<f:selectItems var="rnl"
+							value="#{addIncidentService.getIncidentTypeValue().entrySet()}"
+							itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+						  <f:ajax listener="#{addIncidentService.valueChangeIncidentType()}" render="inSubType" />
+			</h:selectOneMenu>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel for="description"><h:outputText style="color:red" value=" *"/>&nbsp;Description:</h:outputLabel>
+			<h:inputTextarea value="#{addIncidentService.description}" id="description" required="true" requiredMessage="Description is required"
+			disabled="#{addIncidentService.getIsNew() eq 'V'}"></h:inputTextarea>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel for="locDetail">Incident Location Detail:</h:outputLabel>
+			<h:inputTextarea value="#{addIncidentService.locationDetail}" id="locDetail" disabled="#{addIncidentService.getIsNew() eq 'V'}"></h:inputTextarea>
+			<br/>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msginType" for="inType"   style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>			
+ 			<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>
+ 				<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgdescription" for="description"   style="color: red"/>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>
+ 		
+			<br/>
+
+			<h:outputLabel for="inSubType">&nbsp;Incident Subtype:</h:outputLabel>
+			<h:selectOneMenu id="inSubType" value="#{addIncidentService.subTypeName}"
+						requiredMessage="Select incident sub type" required="true"
+						dynamic="true" style="font-size:12px; width:200px;"
+						disabled="#{addIncidentService.getIsNew() eq 'V'}">
+						<f:selectItem itemLabel="Select incident sub type"
+							noSelectionOption="true" />
+						<f:selectItems var="rnl"
+							value="#{addIncidentService.getIncidentSubTypeValue().entrySet()}"
+							itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+						
+			</h:selectOneMenu>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+       		<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel></h:outputLabel>
+			<h:outputLabel></h:outputLabel>
+			<br/>
+			<br/>
+ 		</h:panelGrid> 		
+			 <p:separator/>
+			
+			 <h5>Reporting Detail</h5>
+		 	
+			 <br/>
+ 		<h:panelGrid columns="9" > 
+			<h:outputLabel for="reportBy"><h:outputText style="color:red" value=" *"/>&nbsp;Reported By:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{addIncidentService.reportedBySno}" id="reportBy" disabled="true">
+			<f:ajax listener="#{addIncidentService.valueChangeServiceNo()}"  render="rName" />
+			</h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>	
+			<h:outputLabel ></h:outputLabel>		
+			<h:inputText value="#{addIncidentService.reportedByName}" id="rName" disabled="true"></h:inputText>		
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel ></h:outputLabel>
+			<h:outputLabel ></h:outputLabel>
+			<br/>
+			<br/>
+
+			<h:outputLabel for="origin"><h:outputText style="color:red" value=" *"/>&nbsp;Origin:</h:outputLabel>
+			<h:selectOneMenu id="origin" value="#{addIncidentService.origin}"
+						requiredMessage="Select origin" required="true"
+						dynamic="true" style="font-size:12px; width:200px;"
+						disabled="#{addIncidentService.getIsNew() eq 'V'}">
+						<f:selectItem itemLabel="Select origin"
+							noSelectionOption="true" />
+						<f:selectItems var="rnl"
+							value="#{addIncidentService.getOriginValues().entrySet()}"
+							itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+						
+			</h:selectOneMenu>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;<h:outputText style="color:red" value=" *"/></h:outputLabel>
+			<h:outputLabel for="phone">Work Phone:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{addIncidentService.workPhone}" id="phone" required="true" requiredMessage="Phone number is required"
+			disabled="#{addIncidentService.getIsNew() eq 'V'}"></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;<h:outputText style="color:red" value=" *"/></h:outputLabel>
+			<h:outputLabel for="email">Work E-mail:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{addIncidentService.workEmail}" id="email" required="true" validatorMessage="Invalid email format"
+			disabled="#{addIncidentService.getIsNew() eq 'V'}">
+				    <f:validateRegex
+       				 pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+			</h:inputText>
+			<br/>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgorigin" for="origin"   style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>			
+ 			<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>
+ 				<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgphone" for="phone"   style="color: red"/>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgemail" for="email"   style="color: red"/>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 		
+			<br/>
+	
+			<br/>
+		
+		</h:panelGrid>
+		<br/>
+		<br/>
+		
+		<h:commandButton class="btn btn-primary btn-sm" action="#{addIncidentService.saveIncident()}"  value="Save" disabled="#{addIncidentService.getIsNew() eq 'V'}"></h:commandButton>
+		<h:commandButton style="margin:15px 15px;" class="btn btn-primary btn-sm" action="#{addIncidentService.cancel()}" value="Cancel" immediate="true">
+		<p:resetInput target=":#{p:component('formAdd')}" /> 
+		</h:commandButton>
+		
+	</div>
+  	</div>
+  </p:outputPanel>
+
+		
+	
+	</h:form>
+	
+	
+	<h:form id="formProg">
+	<p:outputPanel id="form2Panel"  style="font-size:12px"  rendered="#{addIncidentService.getIsNew() eq 'P'}">
+
+  	<div class="panel panel-danger" id="formData2"  >
+   		
+			<div class="panel-heading" id="x"> Manage Progress</div>
+		
+    		<div class="panel-body">  	
+			<h:panelGrid columns="3" >
+    		<h:outputLabel>&nbsp;Progress Info:</h:outputLabel>
+    		<h:outputLabel>&nbsp;</h:outputLabel>
+    		<br/>
+    		<br/>
+    		<p:dataTable id="progressDT" var="progressList"
+							value="${addIncidentService.getProgressList()}"
+							rowKey="#{progressList.statusDate}"
+							style="margin-bottom:0; width:900px"  rows="10"
+							selectionMode="single">
+							
+
+
+							<p:column headerText="Date and Time" style="width:80px">
+								<h:outputText value="#{progressList.statusDate}" />
+							</p:column>
+							<p:column headerText="Progress Status" style="width:80px">
+								<h:outputText value="#{progressList.statusDes}" />
+							</p:column>
+							<p:column headerText="By" style="width:80px">
+								<h:outputText value="#{progressList.empName}" />
+							</p:column>
+							<p:column headerText="User Level" style="width:50px">
+								<h:outputText value="#{progressList.userLevel}" />
+							</p:column>
+						
+
+				</p:dataTable>
+					
+			<h:outputLabel>&nbsp;</h:outputLabel>			
+    		<br/>
+    		<br/>
+    		</h:panelGrid>	
+    		
+    		<br/>
+    		
+    		<br/>
+    		
+			<h:commandButton style="margin:15px 15px;" class="btn btn-primary btn-sm" action="#{addIncidentService.cancel()}"  value="Cancel" immediate="true">
+				<p:resetInput target=":#{p:component('formAdd')}" />
+			</h:commandButton>
+    		
+    		</div>
+  	</div>
+	 </p:outputPanel>
+	</h:form>
+	</div>	
+	
+	 <script>
+
+		$(document).ready(function() {
+			
+		    $('#example').DataTable( {
+		        "pagingType": "full_numbers"
+		    } );
+		    
+		    
+		} );
+		
+
+
+		
+	</script>				
+   	</ui:define> 
+</ui:composition> 
+
+ </h:body>
+
+</html>

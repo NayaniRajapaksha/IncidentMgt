@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+	  xmlns:h="http://java.sun.com/jsf/html" 
+	  xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+  
+   <h:head>
+
+
+<title>Container</title>
+
+<link rel="stylesheet" href="resources/css/main_styles.css?V=3" type="text/css" />
+<script language="javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script language="javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>
+        <script language="javascript" src="scripts.js"></script>
+        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/ui-lightness/jquery-ui.css" type="text/css" media="all" />
+
+</h:head>   
+      
+      
+      
+      
+    <h:body>
+        <ui:composition>
+    
+        <div class="headerimg" id="header">
+				<div>
+					<div class="userSy">
+				
+					<h:form id="notiform">
+				
+					<h:graphicImage  value = "resources/images/icons/bell.png"  > 
+	        			</h:graphicImage>
+	        			
+	        		 
+					 <p:dialog header="Notification Box" widgetVar="sample" height="auto" width="350"  position="830,50" draggable="false">  
+
+					 		
+							<p:dataTable id="list" value="${notificationService.viewNotifacationValues()}" var="notify"
+							  scrollHeight="100"  scrollable="true" rowKey="#{notify.id}" selectionMode="single"
+							  selection="#{notificationService.selectedNotification}">
+								<p:ajax event="rowSelect" listener="#{notificationService.onRowSelect}"  oncomplete="sample.hide();"/>
+
+    							<p:column >
+        							<h:outputText value="#{notify.notificationText}" style="font-size:10px;"/>
+   								 </p:column>
+					   
+					</p:dataTable>
+					</p:dialog> 
+					 </h:form>
+					</div>
+				
+					
+					<div class="userSy">
+					<h:form id="form2">
+					
+					
+					<h:panelGrid columns="7" > 
+					
+					
+        			<h:outputLabel>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+        			<p:poll timeout="120000" interval="6000" listener="#{pollView.increment}" update="txt_count">
+         			<p:commandLink onclick="PF('sample').show();" >  
+ 	        				<h:outputText id="txt_count" value="#{pollView.number}"/> 
+	        			 <f:ajax listener="#{notificationService.viewNotifacationValues()}" render="list" />				
+         			</p:commandLink>   
+					
+        			</p:poll>
+        			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>	
+					<h:outputText  value="Welcome"/>
+					<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>					
+					<h:outputText value="#{login.user}"/>
+                                         
+                     <br/>   
+					
+					<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>	
+					<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>	
+					<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>	
+					<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>	
+					<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>	
+					<h:commandLink styleClass="colorMer" action="#{login.logout}" value="log Out" />	
+        				
+                        
+        			</h:panelGrid> 	
+        			
+                        </h:form>
+					</div>
+					
+				</div>
+			</div>
+                
+        </ui:composition>
+    </h:body>
+</html>

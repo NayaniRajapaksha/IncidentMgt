@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+</h:head>
+<h:body>
+<ui:composition template="comTemplate.xhtml"> 
+
+	<ui:define name="content"> 
+		<div id="messages-container">
+			<div id="messages">
+					<p>Manage IRT Details</p>
+			</div>
+		</div>
+		
+		<div  style="margin:15px 15px;">
+			<h:form id="form1">	
+	
+		    	<div class="panel panel-default">
+		  			<div class="panel-body">
+		  				<div class="row">
+							<div class="col-sm">
+							
+									<h:commandButton id="cb1" action="#{irtService.createNew()}"  class="btn btn-primary btn-sm" name="btn-create-new-irt" value='Create New'
+									disabled="#{irtService.getIsNew() eq 'E'}">
+										<p:resetInput target=":#{p:component('formAdd')}" /> 
+									</h:commandButton>
+							</div>
+						</div>
+					</div>  
+		  		 </div>
+		  		 
+		  		 
+		  		  <div class="panel panel-default">
+  				<div class="panel-body" style="width:70%">
+				<div class="row ">
+				<div class="col-sm">
+				
+				<table id="example" class="display" >
+					           <thead>
+					            <tr >
+					            	<th class="small" style="width:60%">Region </th>					                
+					                <th class="small" style="width:20%"></th>
+					             
+					              
+					            </tr>
+					        </thead>
+					        <tbody>
+					        <ui:repeat value="${irtService.listRegionAndDepartments()}" var="branch">
+								<tr>
+									<td class="small" style="width:60%">${branch.branchName}</td>
+									
+								
+									
+									 
+									<td class="small"  style="width:20%"><h:commandButton id="cb3" value="Edit" name="btn-edit-irt" class="btn btn-primary btn-xs"
+									disabled="#{irtService.getIsNew() eq 'N'}" action="#{irtService.getIrtMembersByRegion(branch.regionalId)}"  >
+ 										
+									
+									</h:commandButton></td>
+									
+								</tr>
+							</ui:repeat>
+					            		   
+  				   			  </tbody>
+					        <tfoot>
+					            <tr >
+					               	<th class="small" >Region </th>
+					                <th class="small"  style="width:150px"></th>
+					             
+					            </tr>
+					        </tfoot>
+					       
+					</table>
+					
+				</div>
+				</div>
+				</div>
+			</div>
+		  	</h:form>	
+		  	
+		  	 
+	<h:form id="formAdd">
+	
+	  <p:messages id="messages" showDetail="true" closable="true" autoUpdate="true"> </p:messages>
+	<p:outputPanel id="form2Panel"  style="font-size:12px" rendered="#{irtService.getIsNew() eq 'N' or irtService.getIsNew() eq 'E'}">
+  	<p:growl id="growl"  />
+  	<div class="panel panel-danger" id="formData"  >
+		<c:if test="#{irtService.getIsNew() eq 'N'}">
+		<div class="panel-heading" id="x"> Create IRT Member</div>
+		</c:if>
+		<c:if test="#{irtService.getIsNew() eq 'E'}">
+		<div class="panel-heading" id="x"> Edit IRT Member</div>
+		</c:if>
+    		<div class="panel-body">  
+		<h:panelGrid columns="7" >
+		
+			<h:outputLabel for="region"><h:outputText style="color:red" value=" *"/>&nbsp;Region  :</h:outputLabel>
+			<h:selectOneMenu id="region" value="#{irtService.brName}" 
+						requiredMessage="Select Region or Department" required="true" 
+						 style="font-size:12px; width:200px;">
+						<f:selectItem itemLabel="Select Region or Department"
+							noSelectionOption="true" />
+						<f:selectItems var="rnl"
+							value="#{irtService.getBranchValues().entrySet()}"
+							itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+			</h:selectOneMenu>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgRegion" for="region"   style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+
+			<h:outputLabel for="sno"><h:outputText style="color:red" value=" *"/>&nbsp;Service No:</h:outputLabel>
+			<h:inputText value="#{irtService.serviceNo}" id="sno"  
+				required="true" requiredMessage="Service No is Required">
+			 	<f:ajax listener="#{irtService.valueChangeServiceNo()}"  render="mname" />
+			</h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{irtService.mName}" id="mname" disabled="true"></h:inputText>
+				<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel> 
+			<h:commandButton  actionListener="#{irtService.addIrtMembers()}" class="btn btn-primary btn-sm"  value="Add"
+			></h:commandButton>
+			<br/>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgsno" for="sno" style="color: red"/>&nbsp;&nbsp;&nbsp; </h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+		</h:panelGrid>
+		<br/>
+		<br/>
+		
+	
+		<h:panelGrid columns="2" >
+		
+		
+		
+		
+			<c:if test="${!empty irtService.getIrtMemberList()}">
+				
+				
+				<br/>
+				<h:dataTable value="#{irtService.getIrtMemberList()}" var="entry" 
+				class="table table-bordered" style="margin-bottom:20px; width:400px" >
+	    
+	    			
+	    			 <h:column  style="width:200px">
+    			
+                		<f:facet name="header">IRT Member Name</f:facet>
+    				
+    	
+    				
+    						<h:outputText value="#{entry.memberName}"  />
+                    
+    	     		</h:column>
+    			
+    	     		 <h:column style="width:100px">
+    				<f:facet name="header" >Action</f:facet>
+    				
+    					<h:commandButton id="cb3" actionListener="#{irtService.deleteMember(entry)}" value="Delete" name="btn-edit-unit" class="btn btn-danger btn-xs"
+    					immediate="true">
+ 						</h:commandButton>
+    				
+    	    		 </h:column>
+	    			
+					</h:dataTable>
+			
+			</c:if> 
+			</h:panelGrid>
+			<h:inputHidden value="#{irtMember.id}" ></h:inputHidden>
+			<h:commandButton id="cb1" class="btn btn-primary btn-sm"  value="Save"
+			action="#{irtService.saveIrtDetail(entry)}">
+
+			</h:commandButton>
+			
+			<h:commandButton style="margin:15px 15px;" action="#{irtService.cancel()}" class="btn btn-primary btn-sm"  value="Cancel" immediate="true" >
+				<p:resetInput target=":#{p:component('formAdd')}" /> 
+				
+			</h:commandButton> 
+			<br/>
+			<br/>
+			
+
+			
+      
+
+    
+		
+	</div>
+  	</div>
+  </p:outputPanel>
+  		
+	
+	</h:form>		
+	</div>	
+	 <script>
+
+		$(document).ready(function() {
+			
+		    $('#example').DataTable( {
+		        "pagingType": "full_numbers"
+		    } );
+		    
+		    
+		} );
+		
+
+
+		
+	</script>			
+   	</ui:define> 
+</ui:composition> 
+
+ </h:body>
+
+</html>

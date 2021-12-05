@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2021-08-31T18:41:54 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="mt1" pageWidth="936" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="896" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" uuid="71a57c1a-41f8-40d5-92c8-fde34ce82020">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="INCIDENT_MANAGEMENT"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="inch"/>
+	<parameter name="dateFrom" class="java.lang.String"/>
+	<parameter name="dateTo" class="java.lang.String"/>
+	<parameter name="query" class="java.lang.String"/>
+	<parameter name="wrc" class="java.lang.String"/>
+	<parameter name="LoginUser" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[$P!{query}]]>
+	</queryString>
+	<field name="INCIDENT_NUMBER" class="java.math.BigDecimal"/>
+	<field name="CREATED_DATE" class="java.sql.Timestamp"/>
+	<field name="STATUS_CODE" class="java.lang.String"/>
+	<field name="STATUS_DESC" class="java.lang.String"/>
+	<field name="IMPACT_LVL_NAME" class="java.lang.String"/>
+	<field name="URGENCY_NAME" class="java.lang.String"/>
+	<field name="TYPE_NAME" class="java.lang.String"/>
+	<field name="SUB_TYPE_NAME" class="java.lang.String"/>
+	<field name="LOC_NAME" class="java.lang.String"/>
+	<field name="IRTMEMBER" class="java.lang.String"/>
+	<field name="ASSIGN_MEM" class="java.lang.String"/>
+	<field name="UNIT_NAME" class="java.lang.String"/>
+	<field name="MODIFIED_DATE" class="java.sql.Timestamp"/>
+	<field name="REPORTED_BY" class="java.lang.String"/>
+	<field name="EMPNAME" class="java.lang.String"/>
+	<variable name="V_CURRENT_PAGE_NUMBER" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<textField>
+				<reportElement x="5" y="53" width="900" height="16" uuid="9b86bf5c-b67b-4cdc-a80b-9c78609b58bf"/>
+				<textElement textAlignment="Center">
+					<font fontName="inovaarial1"/>
+				</textElement>
+				<textFieldExpression><![CDATA["From : "+$P{dateFrom}+"     To :  "+$P{dateTo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="3" width="900" height="25" uuid="e094f3ad-34c7-41de-b78c-0e8d56a8cb0a">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="inovaarial1" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PEOPLE’S BANK ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="5" y="28" width="900" height="25" uuid="ab452b68-8dca-4a6b-ac0e-0f67ca14184f"/>
+				<textElement textAlignment="Center">
+					<font fontName="inovaarial1" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ALL INCIDENTS SUMMARY REPORT "]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="10" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="45" splitType="Stretch">
+			<staticText>
+				<reportElement x="14" y="0" width="60" height="15" uuid="70d4fba6-1ee6-4710-839d-5a9c94b805ac"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Incident]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="77" y="0" width="100" height="15" uuid="30899ff7-eead-4c15-b143-406d2962a0a1"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Created]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="77" y="16" width="100" height="14" uuid="67e78f0f-7455-4076-9c3a-27fbf7c596e3"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date & Time]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="175" y="0" width="60" height="15" uuid="5c668a97-e560-4ae2-8798-8660f3dea2d2">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Incident]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="175" y="15" width="60" height="15" uuid="c0ff7540-ccf7-491a-8e73-3d114592026a">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Status]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="234" y="0" width="51" height="15" uuid="ec6f1eb1-02c3-4505-91c2-00920dfea375"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Impact]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="234" y="15" width="51" height="15" uuid="6b1dbcd2-0275-4090-ac1b-c16b6601ff9f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Level]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="0" width="50" height="30" uuid="7f9fbf48-3bcb-4151-8052-2a10778f95b6"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Urgency]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="335" y="0" width="60" height="16" uuid="e4ffb443-a54f-46dd-b12b-2b779d331567"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Incident ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="395" y="0" width="60" height="16" uuid="268fc0a9-8dac-4165-bfef-239b18678e1d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Incident ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="455" y="0" width="70" height="30" uuid="00b25847-0c67-4397-8eed-0a5ba90fb364"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Location]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="396" y="16" width="59" height="14" uuid="7676a73c-21f7-49cd-874b-6b92cd66fd8f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Subtype ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="16" width="60" height="15" uuid="0ba73085-4947-4998-81ac-56a261558ded"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="335" y="15" width="60" height="16" uuid="0877b787-7185-444d-be5e-0dad8f29d855"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Type]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="525" y="0" width="70" height="30" uuid="89eea18d-7f53-492f-a530-4ae0538e6279"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[IRT Member]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="595" y="0" width="90" height="30" uuid="5516de4e-721a-48ce-89f2-ee852c1769ef"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Team Members]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="685" y="0" width="59" height="16" uuid="2e72d0b3-cae2-4094-a5fa-bcd7bf2b995d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Assigned]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="685" y="17" width="59" height="14" uuid="0958892a-b2c9-4c58-97b7-da4728f85b14"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Unit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="745" y="0" width="59" height="17" uuid="00791958-ab64-491e-895d-0f85cdb1afa8"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Assigned]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="745" y="17" width="59" height="14" uuid="b8f624ba-c207-40af-8771-6b1642319ce8"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="805" y="0" width="100" height="17" uuid="1f213a0d-aa84-4adc-9207-b48ad4b3d9d2"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Incident Reporter's]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="805" y="17" width="100" height="14" uuid="a60396aa-6732-4037-a2a4-c51869bac8cb"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+			<line>
+				<reportElement x="13" y="31" width="892" height="2" uuid="f637054b-3ba7-440c-b23d-16e7bf83d996"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="14" y="0" width="60" height="15" uuid="08d928b3-4081-46fb-8652-e6ee353d3c84"/>
+				<textFieldExpression><![CDATA[$F{INCIDENT_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="77" y="0" width="100" height="15" uuid="586fedcf-6449-48de-821e-feb596a59d63"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{CREATED_DATE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="175" y="0" width="60" height="15" uuid="5235f9b6-e4b1-4158-b102-676b9cbb5af2"/>
+				<textFieldExpression><![CDATA[$F{STATUS_DESC}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="234" y="0" width="51" height="15" uuid="4fc33ee7-8791-4806-85ba-3430ae069922"/>
+				<textFieldExpression><![CDATA[$F{IMPACT_LVL_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="285" y="0" width="50" height="15" uuid="8cc2149e-0ebf-479f-8b45-8bb10570fbe8"/>
+				<textFieldExpression><![CDATA[$F{URGENCY_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="335" y="0" width="60" height="15" uuid="f07fa446-60b8-40d7-b3ff-976afe4c1485"/>
+				<textFieldExpression><![CDATA[$F{TYPE_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="395" y="0" width="60" height="15" uuid="8098d0c7-09ee-4a9f-b1aa-fe24d1d0d784"/>
+				<textFieldExpression><![CDATA[$F{SUB_TYPE_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="455" y="0" width="70" height="15" uuid="1f337f0e-6cf5-492f-a75e-47657af9e777"/>
+				<textFieldExpression><![CDATA[$F{LOC_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="525" y="0" width="70" height="15" uuid="6f2b6619-400c-4a97-bc34-fbfa507bc834">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{IRTMEMBER}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="595" y="0" width="90" height="15" uuid="91052dc5-b2bd-4422-9c94-6cad6143a260"/>
+				<textFieldExpression><![CDATA[$F{ASSIGN_MEM}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="685" y="0" width="59" height="15" uuid="f58e0b21-cf87-4852-8de2-d98595be2103"/>
+				<textFieldExpression><![CDATA[$F{UNIT_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="745" y="0" width="59" height="15" uuid="56215d9a-88f6-40f3-9ad3-4023839d9cce"/>
+				<textFieldExpression><![CDATA[$F{MODIFIED_DATE}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="804" y="0" width="101" height="15" uuid="3078aa27-6991-4c7f-a928-d2de966d41a3"/>
+				<textFieldExpression><![CDATA[$F{REPORTED_BY}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="6" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="17" y="4" width="70" height="16" uuid="911cd878-708e-41fb-b71e-eaa15670cd1a"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="h:mm a">
+				<reportElement x="88" y="5" width="68" height="16" uuid="575cf9c0-505c-48bb-81f8-1cb8b16a39b7"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" evaluationTime="Auto" isBlankWhenNull="true">
+				<reportElement x="480" y="5" width="100" height="17" uuid="3df876f3-44c0-4f01-b7c2-e1affd959cca"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["Page "+$V{V_CURRENT_PAGE_NUMBER}+" of "+$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="816" y="4" width="89" height="16" uuid="d54aadf3-9a98-4985-b2e2-08c4681c4af4"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{LoginUser}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="6" splitType="Stretch"/>
+	</summary>
+</jasperReport>

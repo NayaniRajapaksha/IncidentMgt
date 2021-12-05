@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2021-09-03T23:02:49 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Team_Member_Performance" pageWidth="1080" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="1040" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryNewPage="true" isSummaryWithPageHeaderAndFooter="true" uuid="d4b276ae-1a51-4a4f-84f3-8cd1544f80a6">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="INCIDENT_MANAGEMENT"/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<parameter name="dateTo" class="java.lang.String"/>
+	<parameter name="dateFrom" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="LoginUser" class="java.lang.String"/>
+	<parameter name="wrc" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="query" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["SELECT * FROM RP_TEAM_MEMEBER_PERF_SUMMARY_V WHERE "+$P{wrc}+" "]]></defaultValueExpression>
+	</parameter>
+	<parameter name="All Assigned Incidents Count" class="java.lang.Integer"/>
+	<parameter name="Pending Incidents Count" class="java.lang.Integer"/>
+	<parameter name="Pending Incident Numbers" class="java.lang.Integer"/>
+	<parameter name="Resolved Incidents Count" class="java.lang.Integer"/>
+	<parameter name="On-hold Incidents Count" class="java.lang.Integer"/>
+	<parameter name="Closed by Unit Incidents Count" class="java.lang.Integer"/>
+	<parameter name="Incidents solved within the Traget Time" class="java.lang.String"/>
+	<parameter name="Incidents solved after the Target Time " class="java.lang.Integer"/>
+	<parameter name="Pending Dependencies Count" class="java.lang.Integer"/>
+	<parameter name="Completed Dependencies Count" class="java.lang.Integer"/>
+	<parameter name="Closed Dependencies Count" class="java.lang.Integer"/>
+	<parameter name="Overall Performance " class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[$P!{query}]]>
+	</queryString>
+	<field name="INCIDENT_NUMBER" class="java.lang.Integer"/>
+	<field name="CREATED_BY" class="java.lang.String"/>
+	<field name="UNIT_NAME" class="java.lang.String"/>
+	<field name="ASSIGNED_UNIT" class="java.lang.String"/>
+	<field name="STATUS" class="java.lang.String"/>
+	<field name="SOLVED_IN_TIME" class="java.lang.String"/>
+	<field name="CREATED_DATE" class="java.sql.Timestamp"/>
+	<field name="PENDING_COUNT" class="java.lang.Integer"/>
+	<field name="COMPLETE_DEPENDENCY" class="java.lang.Integer"/>
+	<field name="COLOSED_DEPENDENCY" class="java.lang.Integer"/>
+	<variable name="V_CURRENT_PAGE_NUMBER" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+	</variable>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{UNIT_NAME}]]></groupExpression>
+		<groupHeader>
+			<band height="22">
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="72" y="3" width="140" height="15" uuid="23d7cb65-035f-4ace-9633-833c59f7c1f1"/>
+					<textFieldExpression><![CDATA[$F{UNIT_NAME}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="3" y="3" width="67" height="15" uuid="3d2bba7c-19c8-4d56-84b3-276e7722c9db"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Unit Name :]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="4"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<textField>
+				<reportElement x="5" y="53" width="954" height="16" uuid="798ac3c5-42db-491c-abba-73c1a4fb93c0"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA["From : "+$P{dateFrom}+"     To :  "+$P{dateTo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="3" width="954" height="25" uuid="23323013-45d3-4cb1-9063-c90beb14ae77">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PEOPLE'S BANK ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="5" y="28" width="954" height="25" uuid="f4790c4e-aba0-4d2b-80d7-8f3ee2ecc0e2"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TEAM MEMBER PERFORMANCE REPORT"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="12" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="3" y="0" width="67" height="30" uuid="bbb292a1-1ff0-4455-87b4-3f6108369f2a"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Team Member Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="71" y="0" width="79" height="30" uuid="f714db40-8f6f-438d-a6c5-f79e54ec4275"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[All Assigned Incidents Count]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="151" y="0" width="79" height="30" uuid="85cd2f9c-9309-4bcb-bc3a-c89f4d54bd37"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pending Incidents Count]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="231" y="0" width="79" height="30" uuid="066b3de4-b2e8-4b24-bd33-c0c5f086f064"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pending Incident Numbers]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="311" y="0" width="79" height="30" uuid="3c0530d5-1e70-46fd-bf2a-65a11b0a2c1e"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Resolved Incidents Count]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="0" width="80" height="30" uuid="789e137d-2092-4a1b-ade3-ecba05ab4700"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[On-hold Incidents Count]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="472" y="1" width="86" height="30" uuid="86d4d1ef-8015-4f4b-8296-27db324bc75f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Closed by Unit Incidents Count]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="559" y="0" width="70" height="30" uuid="db7f0609-71ca-4260-93a9-5f4a8733f8df"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Incidents solved within the Traget Time]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="629" y="0" width="100" height="30" uuid="ba9cd1ab-93a5-40e8-96ac-405ccbc2ecc0"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Incidents solved after the Target Time (with delay)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="729" y="0" width="80" height="30" uuid="5ab38aee-9204-4c1a-9a9c-12e2de3cc314"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pending Dependencies Count]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="809" y="2" width="80" height="30" uuid="f1f4ec92-56ff-4619-a7a2-7a0e597f63cc"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Completed Dependencies Count]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="889" y="3" width="70" height="30" uuid="ff408750-1a00-4db8-810c-bd90ddd9638f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Closed Dependencies Count]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="959" y="3" width="70" height="30" uuid="9e36527d-2e37-42f4-8959-0a70f1441e1d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Overall Performance (%)]]></text>
+			</staticText>
+			<line>
+				<reportElement x="5" y="31" width="1025" height="1" uuid="b74ff3e8-8cbc-4a4d-803a-58026d0312ed"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="5" y="6" width="65" height="14" uuid="dbbd4735-de97-45d5-9e3a-a2d04ebc1ec6"/>
+				<textFieldExpression><![CDATA[$F{CREATED_BY}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="71" y="6" width="79" height="14" uuid="c698e6a0-a33c-4ae1-9306-245bafa223a2"/>
+				<textFieldExpression><![CDATA[$P{All Assigned Incidents Count}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="150" y="6" width="81" height="14" uuid="02c07333-4a66-4b91-bcd0-6cbab1c096e9"/>
+				<textFieldExpression><![CDATA[$P{Pending Incidents Count}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="230" y="6" width="80" height="14" uuid="f02d2ead-28fa-4d09-8088-284f67e1c641"/>
+				<textFieldExpression><![CDATA[$P{Pending Incident Numbers}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="310" y="6" width="80" height="14" uuid="cf59dfe7-38ec-4e6e-a422-5b16253e70f6"/>
+				<textFieldExpression><![CDATA[$P{Resolved Incidents Count}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="390" y="6" width="82" height="14" uuid="e5cd9399-1a58-45e8-9f1b-743c6c9eaf3d"/>
+				<textFieldExpression><![CDATA[$P{On-hold Incidents Count}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="470" y="6" width="88" height="14" uuid="1aa14703-0776-42c8-a7b6-01e4d57a114c"/>
+				<textFieldExpression><![CDATA[$P{Closed by Unit Incidents Count}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="560" y="6" width="69" height="14" uuid="e311e821-a340-49ec-8731-41d17753448c"/>
+				<textFieldExpression><![CDATA[$P{Incidents solved after the Target Time }]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="630" y="6" width="100" height="14" uuid="b7976747-f603-48c5-ab5a-b6acec7ab6a2"/>
+				<textFieldExpression><![CDATA[$P{Incidents solved after the Target Time }]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="730" y="6" width="79" height="14" uuid="23031ba5-a2a2-4459-98b9-200c22aa7d74"/>
+				<textFieldExpression><![CDATA[$P{Pending Dependencies Count}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="810" y="6" width="79" height="14" uuid="ecec74f5-9e71-415f-8ec5-098a8f4ee5d5"/>
+				<textFieldExpression><![CDATA[$P{Completed Dependencies Count}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="890" y="6" width="69" height="14" uuid="234d5185-be45-4ad6-b6b8-9af4c009e0b0"/>
+				<textFieldExpression><![CDATA[$P{Completed Dependencies Count}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="960" y="6" width="69" height="14" uuid="dedcf077-338d-4236-95d6-5e6fd7d36921"/>
+				<textFieldExpression><![CDATA[$P{Overall Performance }]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="6" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="22" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="3" y="2" width="70" height="16" uuid="93e1000a-636f-4617-97dc-0a508c1d934b"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="h:mm a">
+				<reportElement x="74" y="2" width="68" height="16" uuid="fdb7859f-f496-49c9-816b-f0c60d4a39b6"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" evaluationTime="Auto" isBlankWhenNull="true">
+				<reportElement x="459" y="3" width="100" height="17" uuid="cfecabb3-d1dd-4064-8259-d9179b0f22cc"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["Page "+$V{V_CURRENT_PAGE_NUMBER}+" of "+$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="890" y="0" width="89" height="16" uuid="0a88cd35-c9a5-49ed-9a52-e447daef2277"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{LoginUser}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="4" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+    <h:body>
+    	
+    	<ui:composition template="comTemplate.xhtml">
+			
+
+			<ui:define name="content">
+			
+			<div id="messages-container">
+				<div id="messages">
+					<p>DASHBOARD</p>
+				</div>
+				</div>
+			
+			
+						  
+				<div  style="margin:15px 15px;">
+				<h1>
+						Hello world!  
+					</h1>
+				<div class="card">
+    				<p:chart type="bar" model="#{dashboardService.barModel}" style="height:300px"/>
+				</div>
+    			<!-- <p:dataView id="availableProducts" var="product" value="#{dndProductsView.products}" rows="9" layout="grid" gridIcon="pi pi-th-large" >
+            		<p:dataViewGridItem>
+                	<p:panel id="pnl" header="#{product.name}" style="text-align:center">
+	                    <h:panelGrid columns="1" style="width:100%">
+	                        <p:graphicImage name="/demo/images/product/#{product.image}"/>
+	                    </h:panelGrid>
+                	</p:panel>
+
+                <p:draggable for="pnl" revert="true" handle=".ui-panel-titlebar" stack=".ui-panel"/>
+            </p:dataViewGridItem>
+        </p:dataView>	 -->
+					
+				</div>
+    		</ui:define>
+    	</ui:composition>
+    	
+    </h:body>
+
+</html>

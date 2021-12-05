@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2021-09-07T18:56:28 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Vendor_Summary" pageWidth="1008" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="968" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryNewPage="true" isSummaryWithPageHeaderAndFooter="true" uuid="d11df3ac-9425-493b-8442-af53182b1403">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="INCIDENT_MANAGEMENT"/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<parameter name="dateTo" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($P{dateTo})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="dateFrom" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA[new SimpleDateFormat("dd/MM/yyyy").format($P{dateFrom})]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LoginUser" class="java.lang.String"/>
+	<parameter name="wrc" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="query" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["SELECT * FROM RP_VENDOR_SUMMARY_V WHERE "+$P{wrc}+" "]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="INCIDENT_NUMBER" class="java.lang.Integer"/>
+	<field name="created_date" class="java.sql.Timestamp"/>
+	<field name="status" class="java.lang.String"/>
+	<field name="VEN_NAME" class="java.lang.String"/>
+	<field name="CONTACT_NO" class="java.lang.String"/>
+	<field name="EMAIL" class="java.lang.String"/>
+	<field name="INFORMED_BY" class="java.lang.String"/>
+	<field name="INFORMED_DATE" class="java.sql.Timestamp"/>
+	<field name="VENDOR_RESOLVE_DATE" class="java.sql.Timestamp"/>
+	<field name="RESOLVE_DATE_UPDATED_BY" class="java.lang.String"/>
+	<field name="CREATED_BY" class="java.lang.String"/>
+	<field name="LOCATION_NAME" class="java.lang.Integer"/>
+	<variable name="V_CURRENT_PAGE_NUMBER" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+	</variable>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{VEN_NAME}]]></groupExpression>
+		<groupHeader>
+			<band height="22">
+				<staticText>
+					<reportElement x="-1" y="5" width="79" height="15" uuid="0434a954-c903-492a-941d-97189845b8a7"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Vendor Name  :]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="79" y="5" width="201" height="15" uuid="72d174d4-dee7-4ef7-8c7d-b050e7d05f22"/>
+					<textFieldExpression><![CDATA[$F{VEN_NAME}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="7"/>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="5" y="3" width="946" height="25" uuid="75778ffe-c240-46a1-b940-c562ab0240c7">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PEOPLE'S BANK ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="5" y="28" width="946" height="25" uuid="b6ca4dfb-6e0c-469b-9330-e7900500bee6"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["VENDOR SUMMARY REPORT "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="5" y="53" width="946" height="16" uuid="ec1f1230-ab95-43f0-ac20-1d5489e5a92c"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA["From : "+$P{dateFrom}+" To : "+$P{dateTo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="12" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<staticText>
+				<reportElement x="-1" y="0" width="79" height="30" uuid="0e8adb07-5da4-4c0b-b7eb-ecb7d552e818"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Incident Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="0" width="100" height="30" uuid="29b66d06-9be8-4564-912e-408b32718bde"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Created & Time]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="179" y="0" width="82" height="30" uuid="c5bbe573-b341-485a-af88-244c2338a5db"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Incident Status]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="261" y="0" width="100" height="30" uuid="024d376a-2fa1-4d34-9a1f-29277adfb56e"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vendor Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="0" width="100" height="30" uuid="3d9fcac5-540a-4170-a97b-812509d0c781"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vendor Contact Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="459" y="0" width="100" height="30" uuid="9ea6cfaa-161f-4fab-9efa-20bbd1494650"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vendor E-mail]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="559" y="0" width="100" height="30" uuid="edec7919-305b-42e8-9380-22d5147b55c3"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Informed By]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="659" y="0" width="100" height="30" uuid="b688114a-b985-4b9e-81ab-f4ee26e7cecf"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vendor Informed Date & Time]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="759" y="0" width="92" height="30" uuid="a76c665b-0bfd-4a31-8a2a-e083e7c21385"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vendor Resolved Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="851" y="0" width="100" height="30" uuid="0748f763-c9e2-48d6-a76a-452c9001f46e"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Resolved Date updated By]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="35" width="951" height="1" uuid="a9ca58af-1ac1-4c9f-886f-04ebbd54f3b7"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="-1" y="4" width="79" height="16" uuid="89933f88-bb93-48ba-aacf-301d097540a9"/>
+				<textFieldExpression><![CDATA[$F{INCIDENT_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="82" y="4" width="98" height="16" uuid="bd464928-a5e9-43a3-a980-eafd1b6c0427"/>
+				<textFieldExpression><![CDATA[$F{created_date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="182" y="4" width="79" height="16" uuid="f19bea96-1447-4009-ad2d-d1d6402405e2"/>
+				<textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="261" y="4" width="100" height="16" uuid="59c559e5-6203-49a5-88c6-4400d28e8f39"/>
+				<textFieldExpression><![CDATA[$F{VEN_NAME}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="361" y="4" width="100" height="16" uuid="60a03a50-4e27-48d3-af89-9c9fa06edbb3"/>
+				<textFieldExpression><![CDATA[$F{CONTACT_NO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="462" y="4" width="96" height="16" uuid="817d9188-c918-4688-87da-02109fcbb9d0"/>
+				<textFieldExpression><![CDATA[$F{EMAIL}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="559" y="4" width="100" height="16" uuid="798ea491-59fe-4bf0-b4de-e5cef961c592"/>
+				<textFieldExpression><![CDATA[$F{INFORMED_BY}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="659" y="4" width="100" height="16" uuid="8f70ba60-8f3f-44b6-a539-710e5eb0cf92"/>
+				<textFieldExpression><![CDATA[$F{INFORMED_DATE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="759" y="4" width="92" height="16" uuid="58db6a9e-d739-41ac-b97d-f7055ece5e11"/>
+				<textFieldExpression><![CDATA[$F{VENDOR_RESOLVE_DATE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="853" y="4" width="98" height="16" uuid="f2a5b647-dc67-46d2-ace9-d8f7e7b14f78"/>
+				<textFieldExpression><![CDATA[$F{RESOLVE_DATE_UPDATED_BY}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="6" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="27" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="1" y="2" width="70" height="16" uuid="485caf7a-9830-45bf-ad6c-1013be7607c6"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="h:mm a">
+				<reportElement x="72" y="2" width="68" height="16" uuid="303425e7-2c91-43fe-8d8a-23dc8f0dd69d"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" evaluationTime="Auto" isBlankWhenNull="true">
+				<reportElement x="434" y="3" width="100" height="17" uuid="2257006a-7516-4af9-930e-9fe8331908e3"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["Page "+$V{V_CURRENT_PAGE_NUMBER}+" of "+$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="862" y="0" width="89" height="16" uuid="85b41094-10cc-497a-b2d6-63c647219e05"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{LoginUser}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="5" splitType="Stretch"/>
+	</summary>
+</jasperReport>

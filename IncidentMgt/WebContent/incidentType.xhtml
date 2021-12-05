@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+</h:head>
+<h:body>
+<ui:composition template="comTemplate.xhtml"> 
+
+	<ui:define name="content"> 
+		<div id="messages-container">
+			<div id="messages">
+					<p>Manage Incident Types</p>
+			</div>
+		</div>
+		
+		<div  style="margin:15px 15px;">
+			<h:form id="form1">	
+	
+		    	<div class="panel panel-default">
+		  			<div class="panel-body">
+		  				<div class="row">
+							<div class="col-sm">
+							
+									<h:commandButton id="cb1" action="#{incidentTypeService.createNew()}"  class="btn btn-primary btn-sm" name="btn-create-new-incType" value='Create New'
+									disabled="#{incidentTypeService.getIsNew() eq 'E'}">
+										<p:resetInput target=":#{p:component('formAdd')}" /> 
+									</h:commandButton>
+							</div>
+						</div>
+					</div>  
+		  		 </div>
+		  		 
+		  		 
+		  		  <div class="panel panel-default">
+  				<div class="panel-body" style="width:70%">
+				<div class="row ">
+				<div class="col-sm">
+				
+				<table id="example" class="display" >
+					           <thead>
+					            <tr >
+					            	<th class="small" style="width:60%">Incident type</th>					                
+					                <th class="small" style="width:20%"></th>
+					                <th class="small"  style="width:20%" ></th>
+					              
+					            </tr>
+					        </thead>
+					        <tbody>
+					        <ui:repeat value="${incidentTypeService.listIncidentTypes()}" var="inc_type">
+								<tr>
+									<td class="small" style="width:60%">${inc_type.typeName}</td>
+									
+								
+									
+									 
+									<td class="small"  style="width:20%"><h:commandButton id="cb3" value="Edit" name="btn-edit-incType" class="btn btn-primary btn-xs"
+									disabled="#{incidentTypeService.getIsNew() eq 'N'}" action="#{incidentTypeService.getIncidentTypeById(inc_type.id)}"  >
+ 										
+									
+									</h:commandButton></td>
+									<td class="small"  style="width:20%"><h:commandButton id="cb5"  value="Delete" name="btn-delete-incType" class="btn btn-danger btn-xs"
+									disabled="#{incidentTypeService.getIsNew() eq 'N'}"   action="#{incidentTypeService.deleteIncidentTypeById(inc_type.id)}"  >
+ 										
+									
+									</h:commandButton></td>
+								</tr>
+							</ui:repeat>
+					            		   
+  				   			  </tbody>
+					        <tfoot>
+					            <tr >
+					               	<th class="small" >Incident type</th>
+					                <th class="small"  style="width:150px"></th>
+					                <th class="small"  style="width:150px"></th>
+					            </tr>
+					        </tfoot>
+					       
+					</table>
+					
+				</div>
+				</div>
+				</div>
+			</div>
+		  	</h:form>	
+		  	
+		  	 
+	<h:form id="formAdd">
+	
+	  <p:messages id="messages" showDetail="true" closable="true" autoUpdate="true"> </p:messages>
+	<p:outputPanel id="form2Panel"  style="font-size:12px" rendered="#{incidentTypeService.getIsNew() eq 'N' or incidentTypeService.getIsNew() eq 'E'}">
+  	<p:growl id="growl"  />
+  	<div class="panel panel-danger" id="formData"  >
+		<c:if test="#{incidentTypeService.getIsNew() eq 'N'}">
+		<div class="panel-heading" id="x"> Create Incident Type</div>
+		</c:if>
+		<c:if test="#{incidentTypeService.getIsNew() eq 'E'}">
+		<div class="panel-heading" id="x"> Edit Incident Type</div>
+		</c:if>
+    		<div class="panel-body">  
+		<h:panelGrid columns="5" >
+		
+			<h:outputLabel for="inType"><h:outputText style="color:red" value=" *"/>&nbsp;Incident Type Name:</h:outputLabel>
+			<h:inputText value="#{incidentTypeService.typeName}" id="inType"  required="true" requiredMessage="Incident Type is Required" disabled="#{incidentTypeService.getIsNew() eq 'E'}"></h:inputText>
+		 	<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;<h:message id="msginType" for="inType" style="color: red"/>&nbsp;&nbsp;&nbsp; </h:outputLabel> 
+
+			<br/>
+			<br/>
+
+			<h:outputLabel for="inSubType"><h:outputText style="color:red" value=" *"/>&nbsp;Incident Subtype Name:</h:outputLabel>
+			<h:inputText value="#{incidentTypeService.subTypeName}" id="inSubType"></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:commandButton  actionListener="#{incidentTypeService.addSubTypesToIncident()}" class="btn btn-primary btn-sm"  value="Add"
+			></h:commandButton>
+
+			<br/>
+			<br/>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msginSubType" for="inSubType" globalOnly="true"  style="color: red"/>&nbsp;&nbsp;&nbsp; </h:outputLabel> 
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			<br/>
+		</h:panelGrid>
+		<br/>
+		<br/>
+		
+	
+		<h:panelGrid columns="2" >
+		
+		
+		
+		
+			<c:if test="${!empty incidentTypeService.getIncidentSubList()}">
+				
+				<h:outputLabel>&nbsp;&nbsp;&nbsp;Incident Sub types</h:outputLabel>
+				<br/>
+				<br/>
+				<br/>
+				<h:dataTable value="#{incidentTypeService.getIncidentSubList()}" var="entry" 
+				class="table table-bordered" style="margin-bottom:20px; width:400px" >
+	    
+	    			
+	    			 <h:column  style="width:200px">
+    			
+                		<f:facet name="header">Incident Sub Type</f:facet>
+    				
+    	
+    				
+    						<h:outputText value="#{entry.subTypeName}"  />
+                    
+    	     		</h:column>
+    			
+    	     		 <h:column style="width:100px">
+    				<f:facet name="header" >Action</f:facet>
+    				
+    					<h:commandButton id="cb3" actionListener="#{incidentTypeService.deleteIncidentTypeSubType(entry)}" value="Delete" name="btn-edit-unit" class="btn btn-danger btn-xs">
+ 						</h:commandButton>
+    				
+    	    		 </h:column>
+	    			
+					</h:dataTable>
+			
+			</c:if>
+			</h:panelGrid>
+			<h:inputHidden value="#{inc_type.id}" ></h:inputHidden>
+			<h:commandButton id="cb1" class="btn btn-primary btn-sm"  value="Save"
+			 action="#{incidentTypeService.addIncidentTypes(inc_type)}">
+
+			</h:commandButton>
+			
+			<h:commandButton style="margin:15px 15px;" action="#{incidentTypeService.cancel()}" class="btn btn-primary btn-sm"  value="Cancel" immediate="true" >
+				<p:resetInput target=":#{p:component('formAdd')}" /> 
+				
+			</h:commandButton> 
+			<br/>
+			<br/>
+			
+
+			
+      
+
+    
+		
+	</div>
+  	</div>
+  </p:outputPanel>
+  		
+	
+	</h:form>		
+	</div>	
+	 <script>
+
+		$(document).ready(function() {
+			
+		    $('#example').DataTable( {
+		        "pagingType": "full_numbers"
+		    } );
+		    
+		    
+		} );
+		
+
+
+		
+	</script>			
+   	</ui:define> 
+</ui:composition> 
+
+ </h:body>
+
+</html>

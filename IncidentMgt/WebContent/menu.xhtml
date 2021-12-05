@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	 xmlns:h="http://java.sun.com/jsf/html" 
+	 xmlns:c="http://java.sun.com/jsp/jstl/core" 
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      >
+      
+    <body>
+        <ui:composition>
+    
+        <div class="d-flex" id="wrapper">
+
+   
+    <div class="bg-light border-right" id="sidebar-wrapper">
+    
+      <div class="sidebar-heading"> </div>
+      <div class="list-group list-group-flush" >
+       <ul  class="myList">
+	       <li> <a href="home.xhtml" class="list-group-item list-group-item-action bg-light">Home</a></li>
+	        <li><a href="#" id="btn-1 first" data-toggle="collapse" data-target="#submenu1" aria-expanded="false"
+	       class="list-group-item list-group-item-action bg-light">Transaction Menu
+	       <span class="fas fa-caret-down first"></span>
+	       </a>
+		      <ul class="nav collapse" id="submenu1" role="menu" aria-labelledby="btn-1">
+		      	<c:if test="#{(addIncidentService.getLoggedUserLevel() eq 'IRT_USER') or (addIncidentService.getLoggedUserLevel() eq 'EMP_USER')}">
+		        	<li ><a href="empIncident.xhtml">Individual Incidents</a></li>
+		        </c:if>
+		        <c:if test="#{assignIncidentService.getLoggedUserLevel() eq 'IRT_USER'}">
+		       		 <li><a href="irtIncident.xhtml">IRT Incidents</a></li>
+		        </c:if>
+		        <c:if test="#{(unitIncidentService.getLoggedUserLevel() eq 'UNIT_HEAD') or (unitIncidentService.getLoggedUserLevel() eq 'UNIT_MEMBER')}">
+		        	<li><a href="unitIncident.xhtml">Unit Incidents</a></li>
+		        </c:if>
+		      </ul>
+		    </li>
+	       <li> <a href="success.xhtml" class="list-group-item list-group-item-action bg-light">FAQs / Global Incidents</a></li>
+	       <li> <a href="test.xhtml" class="list-group-item list-group-item-action bg-light">Feedback Menu</a></li>
+	       
+	       <li><a href="#" id="btn-1 second" data-toggle="collapse" data-target="#submenu2" aria-expanded="false"
+	       class="list-group-item list-group-item-action bg-light">Master Menu
+	       <span class="fas fa-caret-down first"></span>
+	       </a>
+		      <ul class="nav collapse" id="submenu2" role="menu" aria-labelledby="btn-1">
+		        <li><a href="incidentType.xhtml" >Manage Incident Type</a></li>
+		        <li><a href="manageVendor.xhtml">Manage Vendor</a></li>
+		        <li><a href="manageUnit.xhtml">Manage Unit</a></li>
+		         <li><a href="manageUnitMember.xhtml">Manage Team Members</a></li>
+		         <li><a href="manageIrtMembers.xhtml">Manage IRT</a></li>
+		          <li><a href="manageFaq.xhtml">Manage FAQ</a></li>
+		      </ul>
+		    </li>
+		    
+	       <li> <a href="incidentSummary.xhtml" class="list-group-item list-group-item-action bg-light">Incident Summary Menu</a></li>
+	       <li> <a href="reports.xhtml" class="list-group-item list-group-item-action bg-light">Reports/Incident Tickets</a></li>
+	       
+	    
+	       
+        </ul>
+      </div>
+    </div>
+  </div>
+                
+        </ui:composition>
+    </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        
+        
+        
+        
+        
+
+ 
+ 
+

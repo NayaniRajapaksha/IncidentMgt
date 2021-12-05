@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+</h:head>
+<h:body>
+<ui:composition template="comTemplate.xhtml"> 
+
+	<ui:define name="content"> 
+		<div id="messages-container">
+			<div id="messages">
+					<p>Manage Vendors</p>
+			</div>
+		</div>
+		
+		<div  style="margin:15px 15px;">
+			<h:form id="form1">	
+	
+		    	<div class="panel panel-default">
+		  			<div class="panel-body">
+		  				<div class="row">
+							<div class="col-sm">
+							
+									<h:commandButton id="cb2" action="#{vendorService.createNew()}" class="btn btn-primary btn-sm" name="btn-create-new-unit" value='Create New'
+										disabled="#{vendorService.getIsNew() eq 'E'}">
+ 										<p:resetInput target=":#{p:component('formAdd')}" /> 
+									</h:commandButton>
+							</div>
+						</div>
+					</div>  
+		  		 </div>
+		  		 
+		  		 <div class="panel panel-default">
+  				<div class="panel-body">
+				<div class="row ">
+				<div class="col-sm">
+				
+				<table id="example" class="display" style="width:100%">
+					           <thead>
+					            <tr >
+					            	<th class="small" >Vendor ID</th>
+					                <th class="small" >Vendor Name</th>
+					                <th class="small" >Contact No</th>
+					                <th class="small" >Email</th>
+					                <th class="small" >Status</th>
+					                <th class="small" >Action</th>
+					              
+					            </tr>
+					        </thead>
+					        <tbody>
+					        <ui:repeat value="${vendorService.listVendors()}" var="vendor">
+								<tr>
+									<td class="small">${vendor.ven_code}</td>
+									<td class="small">${vendor.ven_name}</td>
+									<td class="small">${vendor.contact_no}</td>
+									<td class="small">${vendor.email}</td>
+								
+									
+									 <c:choose>
+					                <c:when test="${vendor.status == 'A'}">
+					                	<td class="small" >Active</td>
+					                </c:when>
+					                <c:otherwise>
+					                	<td class="small" >Inactive</td>
+					                </c:otherwise>
+					                </c:choose>
+									<td class="small"><h:commandButton id="cb3" action="#{vendorService.getVendorByCode(vendor.ven_code)}" value="Edit" name="btn-edit-unit" class="btn btn-primary btn-xs"
+									disabled="#{vendorService.getIsNew() eq 'N'}" >
+ 										
+									
+									</h:commandButton></td>
+								</tr>
+							</ui:repeat>
+					            		   
+  				   			  </tbody>
+					        <tfoot>
+					            <tr >
+					               	<th class="small" >Vendor Name</th>
+					                <th class="small" >Contact No</th>
+					                <th class="small" >Email</th>
+					                <th class="small" >Status</th>
+					                <th class="small" >Action</th>
+					            </tr>
+					        </tfoot>
+					       
+					</table>
+					
+				</div>
+				</div>
+				</div>
+			</div>
+			
+		  	</h:form>	
+		  	
+		  	 
+	<h:form id="formAdd">
+
+	  <p:messages id="messages" showDetail="true" closable="true" autoUpdate="true"> </p:messages>
+	<p:outputPanel id="form2Panel"  style="font-size:12px" rendered="#{vendorService.getIsNew() eq 'N' or vendorService.getIsNew() eq 'E'}">
+  	<div class="panel panel-danger" id="formData"  >
+  		<c:if test="#{vendorService.getIsNew() eq 'N'}">
+			<div class="panel-heading" id="x"> Create Vendor</div>
+		</c:if>
+		<c:if test="#{vendorService.getIsNew() eq 'E'}">
+			<div class="panel-heading" id="x"> Edit Vendor</div>
+		</c:if>
+    		<div class="panel-body">  
+		<h:panelGrid columns="7" >
+		
+			<h:outputLabel for="vname"><h:outputText style="color:red" value=" *"/>&nbsp;Vendor Name:</h:outputLabel>
+			<h:inputText value="#{vendor.ven_name}" id="vname" required="true" requiredMessage="Vendor Name is Required"></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgVname" for="vname" style="color: red"/>&nbsp;&nbsp;&nbsp; </h:outputLabel> 
+			<h:outputLabel for="cperson">Contact Person:</h:outputLabel>
+			<h:inputText value="#{vendor.contact_person}" id="cperson"></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			<br/>
+			
+
+			<h:outputLabel for="cno1"><h:outputText style="color:red" value=" *"/>&nbsp;Contact N0 1:</h:outputLabel>
+			<h:inputText value="#{vendor.contact_no}" id="cno1" required="true" requiredMessage="Contact No is Required"></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgCno1" for="cno1"   style="color: red"/> &nbsp;&nbsp;&nbsp;<h:outputText style="color:red" value=" *"/></h:outputLabel>
+			<h:outputLabel for="email">Vendor E-mail:</h:outputLabel>
+			<h:inputText value="#{vendor.email}" id="email" required="true" requiredMessage="Email Required"></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgEmail" for="email" style="color: red"/>&nbsp;&nbsp;&nbsp; </h:outputLabel> 
+			<br/>
+			<br/>
+			
+
+			
+		
+			<h:outputLabel for="cno2">&nbsp;Contact N0 2:</h:outputLabel>
+			<h:inputText value="#{vendor.contact_no2}" id="cno2"></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel for="fax">Fax No:</h:outputLabel>
+			<h:inputText value="#{vendor.fax_no}" id="fax"></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			<br/>
+
+			<h:outputLabel for="address">&nbsp;Vendor Address:</h:outputLabel>
+			<h:inputTextarea value="#{vendor.address}" id="address"></h:inputTextarea>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel for="status">Status:</h:outputLabel>
+			<h:selectOneRadio id="status" value="#{vendor.status}" unselectable="true">
+            		<f:selectItem itemLabel="Active" itemValue="A"/>
+           			<f:selectItem itemLabel="Inactive" itemValue="I"/>
+          
+       		</h:selectOneRadio>
+       		<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			<br/>
+			
+			<br/>
+			<br/>
+			<h:inputHidden value="#{vendor.ven_code}" ></h:inputHidden>
+			<h:commandButton id="cb1" class="btn btn-primary btn-sm"  value="Save" actionListener="#{vendorService.addVendor(vendor)}"
+			 >
+
+			</h:commandButton>
+			
+			<h:commandButton class="btn btn-primary btn-sm"  value="Cancel" immediate="true" action="#{vendorService.cancel()}">
+				<p:resetInput target=":#{p:component('formAdd')}" />
+				
+			</h:commandButton> 
+		
+			
+		</h:panelGrid>
+		
+		
+	</div>
+  	</div>
+  </p:outputPanel>
+  		
+	
+	</h:form>		
+	</div>	
+	
+	 <script>
+
+		$(document).ready(function() {
+			
+		    $('#example').DataTable( {
+		        "pagingType": "full_numbers"
+		    } );
+		    
+		    
+		} );
+		
+
+
+		
+	</script>		
+   	</ui:define> 
+</ui:composition> 
+
+ </h:body>
+
+</html>

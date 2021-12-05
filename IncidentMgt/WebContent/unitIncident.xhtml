@@ -1,0 +1,804 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+</h:head>
+<h:body>
+<ui:composition template="comTemplate.xhtml"> 
+
+	<ui:define name="content"> 
+		<div id="messages-container">
+			<div id="messages">
+					<p>Unit Incidents</p>
+			</div>
+		</div>
+		
+		<div  style="margin:15px 15px;">
+			<h:form  >	
+			
+		    	<div class="panel panel-default">
+		  			<div class="panel-body">
+		  				<div class="row">
+							<div class="col-sm">
+							 <h:panelGrid columns="4" > 
+									<h:selectOneRadio id="inf" value="#{unitIncidentService.incidentCat}"  style="margin:15px 15px;">
+            								<f:selectItem itemLabel="All Incidents" itemValue="A"  />
+           									<f:selectItem itemLabel="My Incidents" itemValue="M"/> 
+          								<f:ajax listener="#{unitIncidentService.valuChangeForIncidentCategory()}"  render="@all"/>
+       								</h:selectOneRadio>
+       								<h:outputLabel>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+       								<h:commandButton id="cbb" style="margin:0px 15px;" action="#{unitIncidentService.dependency()}"  class="btn btn-primary btn-sm" name="btn-back" value='View Dependency'
+									immediate="true">
+									</h:commandButton>
+								</h:panelGrid>	
+							</div>
+						</div>
+					</div>  
+		  		 </div>
+		  		 
+		  		 <div class="panel panel-default">
+  				<div class="panel-body">
+				<div class="row ">
+				<div class="col-sm">
+				
+				<table id="example" class="display" style="width:100%">
+					           <thead>
+					            <tr >
+					            	<th class="small" >Created Date</th>
+					                <th class="small" >Incident No</th>
+					                <th class="small" >Unit Name</th>
+					                <th class="small" >Region / Dept</th>
+					                <th class="small" >Branch Name</th>
+					                <th class="small" >Incident Status</th>
+					               <th class="small" >Impact Level</th>
+					                <th class="small" >Urgency</th>
+					                <th class="small" >Team Member Name</th>
+					                <th class="small" ></th>
+					                <th class="small" ></th>
+					              
+					            </tr>
+					        </thead>
+					        <tbody>
+					        <ui:repeat value="${unitIncidentService.listAllIncidents()}" var="incident">
+								<tr>
+									<td class="small">${incident.created_date}</td>
+									<td class="small">${incident.incident_number}</td>
+									<td class="small">${incident.unit_name}</td>
+									<td class="small">${incident.regional_name}</td>
+									<td class="small">${incident.bname}</td>
+									<td class="small"><h:outputText  value="#{incident.status eq 'PWM'?(incident.mem_status_id eq '7' ? 'Inprogress' : incident.mem_status_id eq '8' ? 'On Hold' : incident.mem_status_id eq '15' ? 'Resolved' : incident.status_desc) : incident.status_desc}" /></td>
+									<td class="small">${incident.impact_level}</td>
+									<td class="small">${incident.urgency}</td>
+									<td class="small">${incident.ass_mem_name}</td>
+									
+									
+									
+									<td class="small"><h:commandButton id="cb2" action="#{unitIncidentService.progress(incident.incident_number)}"  value="Progress" name="btn-pr-in" class="btn btn-primary btn-xs">
+ 									
+									</h:commandButton></td>
+									
+									
+									
+									<td class="small"><h:commandButton id="cb4" action="#{unitIncidentService.viewIncidentDetailByID(incident.incident_number)}" value="View" name="btn-edit-unit" class="btn btn-primary btn-xs">
+ 									
+									</h:commandButton></td>
+								</tr>
+							</ui:repeat>
+					            		   
+  				   			  </tbody>
+					        <tfoot>
+					            <tr >
+					               	<th class="small" >Created Date</th>
+					                <th class="small" >Incident No</th>
+					                <th class="small" >Unit Name</th>
+					                <th class="small" >Region / Dept</th>
+					                <th class="small" >Branch Name</th>
+					                <th class="small" >Incident Status</th>
+					               <th class="small" >Impact Level</th>
+					                <th class="small" >Urgency</th>
+					                <th class="small" >Team Member Name</th>
+					                <th class="small" ></th>
+					                <th class="small" ></th>
+					            </tr>
+					        </tfoot>
+					       
+					</table>
+					
+				</div>
+				</div>
+				</div>
+			</div>
+		
+		  	</h:form>	
+		  	
+		  	 
+	<h:form id="uformAdd">
+	
+	 <p:messages id="messages" showDetail="true" closable="true" autoUpdate="true" rendered="#{unitIncidentService.getIsNew() ne 'P'}"> </p:messages> 
+	<p:outputPanel id="form2Panel"  style="font-size:12px"  rendered="#{unitIncidentService.getIsNew() eq 'V'}">
+
+  	<div class="panel panel-danger" id="formData"  >
+   		
+		<c:if test="#{unitIncidentService.getIsNew() eq 'V'}">
+			<div class="panel-heading" id="x"> View Incident</div>
+		</c:if>
+    		<div class="panel-body">  
+    	<h5>Incident Detail</h5>	
+		<h:panelGrid columns="9" >
+		
+			<h:outputLabel for="title"><h:outputText style="color:red" value=" *"/>&nbsp;Title:</h:outputLabel>
+			<h:inputText value="#{unitIncidentService.title}" id="title" 
+			disabled="#{unitIncidentService.getIsNew() eq 'V'}"></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel for="priority">Priority:</h:outputLabel>
+			<h:inputText value="#{unitIncidentService.priorityLevel}" id="priority" disabled="true"></h:inputText>
+			
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel for="oDate">Incident Occurrence Date and Time:</h:outputLabel>
+			<h:inputText value="#{unitIncidentService.occuranceDate}" disabled="#{unitIncidentService.getIsNew() eq 'V'}">	
+				<f:convertDateTime pattern="yyyy-MM-dd" />  
+			</h:inputText>
+			<br/>
+			<br/>
+		
+
+			<h:outputLabel for="area"><h:outputText style="color:red" value=" *"/>&nbsp;Technically Affected Area:</h:outputLabel>
+			<h:inputText value="#{unitIncidentService.techAffect}" id="area" disabled="true"></h:inputText>
+			
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel for="process"><h:outputText style="color:red" value=" *"/>&nbsp;Affected Unit/Process:</h:outputLabel>
+			<h:inputText value="#{unitIncidentService.affectedProcess}" id="process" disabled="true"></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel for="location"><h:outputText style="color:red" value=" *"/>&nbsp;Incident Location:</h:outputLabel>
+			<h:inputText value="#{unitIncidentService.location}" id="location" disabled="true"></h:inputText>
+			
+			<br/>
+			<br/>
+			
+
+			<h:outputLabel for="inType"><h:outputText style="color:red" value=" *"/>&nbsp;Incident Type:</h:outputLabel>
+			<h:inputText value="#{unitIncidentService.typeName}" id="inType" disabled="true"></h:inputText>
+			
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel for="description"><h:outputText style="color:red" value=" *"/>&nbsp;Description:</h:outputLabel>
+			<h:inputTextarea value="#{unitIncidentService.description}" id="description" 
+			disabled="true"></h:inputTextarea>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel for="locDetail">Incident Location Detail:</h:outputLabel>
+			<h:inputTextarea value="#{unitIncidentService.locationDetail}" id="locDetail" disabled="true"></h:inputTextarea>
+			
+ 			<br/>
+			<br/>
+
+			<h:outputLabel for="inSubType">&nbsp;Incident Subtype:</h:outputLabel>
+			<h:inputText value="#{unitIncidentService.subTypeName}" id="inSubType" disabled="true"></h:inputText>
+			
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+       		<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel></h:outputLabel>
+			<h:outputLabel></h:outputLabel>
+			<br/>
+			<br/>
+ 		</h:panelGrid> 		
+			 <p:separator/>
+			
+			 <h5>Incident Assignment</h5>
+		 	
+			 <br/>
+ 		<h:panelGrid columns="9" > 
+			<h:outputLabel for="unit"><h:outputText style="color:red" value=" *"/>&nbsp;Assigned Unit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputText value="#{unitIncidentService.unitName}" id="unit" disabled="true" >
+			</h:outputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>	
+			<h:outputLabel for="unitMembers"><h:outputText style="color:red" value=" *"/>&nbsp;Assign Incident To:</h:outputLabel>
+			<h:selectOneMenu id="unitMembers" value="#{unitIncidentService.assignMember}" 
+						requiredMessage="Select Team Member"  autoSubmit="true"
+						disabled="#{unitIncidentService.incidentCStatus eq 'I'}" 
+						style="font-size:12px; width:200px;">
+						<f:selectItem itemLabel="Select Team Member"
+							noSelectionOption="true" />
+						<f:selectItems var="rnl"
+							value="#{unitIncidentService.getUnitMemberValues().entrySet()}"
+							itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+						
+			</h:selectOneMenu>		
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel ></h:outputLabel>
+			<h:commandButton class="btn btn-primary btn-sm" disabled="#{unitIncidentService.incidentCStatus eq 'I'}"  action="#{unitIncidentService.assignToTeamMember()}" value="Assign"  ></h:commandButton>
+			
+			<br/>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgunit" for="unit"   style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>			
+ 			<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>
+ 				<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgunitMembers" for="unitMembers"   style="color: red"/>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 		
+			<br/>
+			<h:outputLabel for="pcount">&nbsp;Pending Incident Count:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputText value="#{unitIncidentService.pendingICount}" id="pcount" disabled="true">
+			</h:outputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel for="dcount">Pending Dependency Count:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputText value="#{unitIncidentService.pendingDCount}" id="dcount"></h:outputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>				
+			<br/>
+			<h:outputLabel for="pcount">&nbsp;RollBack To:</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:commandButton class="btn btn-primary btn-sm" disabled="#{unitIncidentService.incidentCStatus eq 'I'}"   value="Other Unit" type="button" onclick="PF('dlgR').show();"  ></h:commandButton>
+			<h:commandButton class="btn btn-primary btn-sm" disabled="#{unitIncidentService.incidentCStatus eq 'I'}"  value="IRT" type="button" onclick="PF('dlgRi').show();" ></h:commandButton>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+		<!-- 	<h:outputText value="#{unitIncidentService.incidentCStatus }" ></h:outputText> -->
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+		
+		</h:panelGrid>
+		
+		 <p:separator/>
+		 <h5>Incident Classification</h5>
+		 <br/>
+		 <h:panelGrid columns="9" > 
+			<h:outputLabel>&nbsp;&nbsp;Impact level:&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{unitIncidentService.impactLevel}" id="impact" disabled="true"></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel >&nbsp;Urgency:</h:outputLabel>
+			<h:inputText value="#{unitIncidentService.urgency}" id="urgency" disabled="true"></h:inputText>
+			<h:outputLabel >&nbsp;&nbsp;&nbsp;</h:outputLabel>			
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			<br/>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel >&nbsp;Working Days:</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel >&nbsp;Hours:</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel >&nbsp;Minitues:</h:outputLabel>			
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			<br/>
+			
+			<h:outputLabel >&nbsp;Target Resolution time:&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{unitIncidentService.workingDays}" id="twd" disabled="true"></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{unitIncidentService.hours}" id="thours" disabled="true"></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{unitIncidentService.minutes}" id="tmin" disabled="true"></h:inputText>			
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			<br/>
+			<h:outputLabel >&nbsp;Actual Resolution time:&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{unitIncidentService.aWorkingDays}" id="awd" ></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{unitIncidentService.aHours}" id="ahours" ></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{unitIncidentService.aMinutes}" id="amin"></h:inputText>			
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			<br/>
+			<br/>
+			<h:outputLabel >&nbsp;Response Date and Time:&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<p:calendar	    binding="#{passResponseDate}"
+						value="#{unitIncidentService.responseDate}" 
+						pattern="dd/MM/yyyy"
+						maxdate="#{unitIncidentService.today}" id="resDate" required="true"
+						requiredMessage="Value is required"
+						converterMessage="test">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+						<p:ajax 
+							event="dateSelect" />
+			</p:calendar>
+				
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>			
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+		 </h:panelGrid>	
+		 
+		 <p:outputPanel id="incActionPanel"  style="font-size:12px"  rendered="#{unitIncidentService.incActionVisibility eq 'Y'}">
+		  <p:separator/>
+		 <h5>Incident Action</h5>
+		 <br/>
+		 <h:panelGrid columns="6" > 
+			<h:outputLabel for="inStatus"><h:outputText style="color:red" value=" *"/>&nbsp;Incident Status:</h:outputLabel>
+			<h:selectOneMenu id="inStatus" value="#{unitIncidentService.currentStatus}"
+						requiredMessage="Select Incident Status" 
+						dynamic="true" style="font-size:12px; width:200px;">
+						<f:selectItem itemLabel="Select Incident Status"
+							noSelectionOption="true" />
+						<f:selectItems var="rnl"
+							value="#{unitIncidentService.getIncidentStatusValues().entrySet()}"
+							itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+						
+			</h:selectOneMenu>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel >&nbsp;Status Update Date and Time:&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<p:calendar	    binding="#{passUpDate}"
+						value="#{unitIncidentService.statusUpDate}" 
+						pattern="dd/MM/yyyy"
+						maxdate="#{unitIncidentService.today}" id="upDate" required="true"
+						requiredMessage="Value is required"
+						converterMessage="test">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+						<p:ajax 
+							event="dateSelect" />
+			</p:calendar>
+				
+			<br/>
+			
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msginStatus" for="inStatus"   style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>			
+ 			<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>
+ 				<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 				<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			
+			 <br/>
+		 	<h:outputLabel for="root"><h:outputText style="color:red" value=" *"/>&nbsp;Root Cause:</h:outputLabel>
+			<h:inputTextarea value="#{unitIncidentService.rootCause}" id="root" style="width:250px"></h:inputTextarea>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel >&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel >&nbsp;&nbsp;&nbsp;</h:outputLabel>	
+			
+			<br/>
+			
+			<h:outputLabel for="aTaken"><h:outputText style="color:red" value=" *"/>&nbsp;Action Taken:</h:outputLabel>
+			<h:inputTextarea value="#{unitIncidentService.actionTaken}" id="aTaken" style="width:250px"></h:inputTextarea>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel >&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel >&nbsp;&nbsp;&nbsp;</h:outputLabel>	
+			
+			<br/>
+			<h:outputLabel for="vSolveDate"><h:outputText style="color:red" value=" *"/>&nbsp;Vendor Solved Date:</h:outputLabel>
+			<p:calendar	    binding="#{passVInformDate}"
+						value="#{unitIncidentService.vInformDate}" 
+						pattern="dd/MM/yyyy"
+						maxdate="#{unitIncidentService.today}" id="vSolveDate" required="true"
+						requiredMessage="Value is required"
+						converterMessage="test">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+						<p:ajax 
+							event="dateSelect" />
+			</p:calendar>
+	
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:commandButton class="btn btn-primary btn-sm"   type="button" onclick="PF('dlgV').show();" value="Inform Vendor" visible="#{unitIncidentService.visibleAction eq 'Y'? true:false}" disabled="#{unitIncidentService.disabledAction eq 'Y'? true:false}" immediate="true"></h:commandButton>
+			<h:outputLabel >&nbsp;&nbsp;&nbsp;</h:outputLabel>	
+			
+			<br/>
+		 </h:panelGrid>	
+		 </p:outputPanel>
+		 <br/>
+		<br/>
+		
+		<h:outputText style="color:red" value="#{unitIncidentService.incActionVisibility }"/>
+		<br/>
+		<h:commandButton class="btn btn-primary btn-sm"   value="Incident History" immediate="true" type="button" onclick="PF('dlg').show();" ></h:commandButton>
+		<h:commandButton style="margin:15px 15px;" class="btn btn-primary btn-sm" type="button" onclick="PF('dep').show();" value="Add Dependency"  rendered="#{unitIncidentService.visibleAction eq 'Y'? true:false}" disabled="#{unitIncidentService.disabledAction eq 'Y'? true:false}" immediate="true" ></h:commandButton>
+		<h:commandButton style="margin:15px 15px;" class="btn btn-primary btn-sm"  type="button" onclick="PF('dlgC').show();" rendered="#{unitIncidentService.visibleAction eq 'Y'? true:false}"  disabled="#{unitIncidentService.disabledAction eq 'Y'? true:false}" value="Close Incident" immediate="true" >
+
+		</h:commandButton>
+		<h:commandButton style="margin:15px 15px;" class="btn btn-primary btn-sm"  action="#{unitIncidentService.saveUnitIncident()}" rendered="#{unitIncidentService.visibleAction eq 'Y'? true:false}" disabled="#{unitIncidentService.disabledAction eq 'Y'? true:false}" value="Save" ></h:commandButton>
+		<h:commandButton style="margin:15px 15px;" class="btn btn-primary btn-sm" action="#{unitIncidentService.cancel()}"  value="Cancel" immediate="true">
+			<p:resetInput target=":#{p:component('uformAdd')}" />
+		</h:commandButton>
+		<br/>
+		<br/>
+		<br/>
+		
+		
+	</div>
+  	</div>
+  </p:outputPanel>
+
+		
+	
+	</h:form>
+	
+	
+	<h:form id="formProg">
+	<p:outputPanel id="form2Panel"  style="font-size:12px"  rendered="#{unitIncidentService.getIsNew() eq 'P'}">
+
+  	<div class="panel panel-danger" id="formData2"  >
+   		
+			<div class="panel-heading" id="x"> Manage Progress</div>
+		
+    		<div class="panel-body">  	
+			<h:panelGrid columns="3" >
+    		<h:outputLabel>&nbsp;Progress Info:</h:outputLabel>
+    		<h:outputLabel>&nbsp;</h:outputLabel>
+    		<br/>
+    		<br/>
+    		<p:dataTable id="progressDT" var="progressList"
+							value="${unitIncidentService.listIncidentStatus()}"
+							rowKey="#{progressList.statusDate}"
+							style="margin-bottom:0; width:900px"  rows="10"
+							selectionMode="single">
+							
+
+
+							<p:column headerText="Date and Time" style="width:80px">
+								<h:outputText value="#{progressList.statusDate}" />
+							</p:column>
+							<p:column headerText="Progress Status" style="width:80px">
+								<h:outputText value="#{progressList.statusDes}" />
+							</p:column>
+							<p:column headerText="By" style="width:80px">
+								<h:outputText value="#{progressList.empName}" />
+							</p:column>
+							<p:column headerText="User Level" style="width:50px">
+								<h:outputText value="#{progressList.userLevel}" />
+							</p:column>
+							<p:column  style="width:35px">
+								<h:commandButton class="btn btn-primary btn-sm"   value="Reason" ></h:commandButton>
+							</p:column>
+
+				</p:dataTable>
+					
+			<h:outputLabel>&nbsp;</h:outputLabel>			
+    		<br/>
+    		<br/>
+    		</h:panelGrid>	
+    		
+    		<br/>
+    		<p:separator/>
+    		<br/>
+    		<h:outputLabel for="incProg"><h:outputText style="color:red" value=" *"/>&nbsp;Incident Progress :&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{addIncidentService.reportedBySno}" id="incProg" disabled="true">
+			</h:inputText>
+			<br/>
+    		<br/>
+    		<h:outputLabel for="reasonReopen"><h:outputText style="color:red" value=" *"/>&nbsp;Reason to reopen :&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputTextarea value="#{addIncidentService.reportedBySno}" id="reasonReopen" disabled="true">
+			</h:inputTextarea>
+			<br/>
+    		<br/>
+    		<h:commandButton class="btn btn-primary btn-sm"  value="Submit" ></h:commandButton>
+			<h:commandButton style="margin:15px 15px;" class="btn btn-primary btn-sm" action="#{unitIncidentService.cancel()}"  value="Cancel" immediate="true">
+				
+			</h:commandButton>
+    		
+    		</div>
+  	</div>
+	 </p:outputPanel>
+	</h:form>
+	
+	
+	<h:form>
+        <p:dialog id="IncidentHis" header="Incident History" widgetVar="dlg" modal="true">
+            <h:panelGrid columns="3" >
+    		<h:outputLabel>&nbsp;Incident History Info:</h:outputLabel>
+    		<h:outputLabel>&nbsp;</h:outputLabel>
+    		<br/>
+    		<br/>
+    		<p:dataTable id="indidentHistoryDT" var="historyList"
+							value="${unitIncidentService.unitAssignHistory()}"
+							rowKey="#{historyList.assignDate}"
+							style="margin-bottom:0; width:900px"  rows="10"
+							selectionMode="single">
+							
+							<p:column headerText="Assigned Date" style="width:80px">
+								<h:outputText value="#{historyList.assignDate}" />
+							</p:column>
+
+							<p:column headerText="Assigned Unit" style="width:80px">
+								<h:outputText value="#{historyList.assigned_unit}" />
+							</p:column>
+							<p:column headerText="Impact Level" style="width:80px">
+								<h:outputText value="#{historyList.impactLevel}" />
+							</p:column>
+							<p:column headerText="Urgency" style="width:80px">
+								<h:outputText value="#{historyList.urgency}" />
+							</p:column>
+							<p:column headerText="Reassign Reason" style="width:50px">
+								<h:outputText value="#{historyList.reassignReasonId}" />
+							</p:column>
+						
+
+				</p:dataTable>
+					
+			<h:outputLabel>&nbsp;</h:outputLabel>			
+    		<br/>
+    		<br/>
+    		</h:panelGrid>	
+    		<br/>
+    		<br/>
+            <p:commandButton value="Close"  onclick="PF('dlg').hide();"/>
+        </p:dialog>
+
+        
+    </h:form>
+    
+    <h:form>
+        <p:dialog id="uClose" header="Close Incident" widgetVar="dlgC" modal="true" >
+            <h:panelGrid columns="3" >
+    		<h:outputLabel for="uCReason"><h:outputText style="color:red" value=" *"/>&nbsp;Close Reason:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>		
+			<h:selectOneMenu id="uCReason" value="#{unitIncidentService.closeReason}" 
+						requiredMessage="Select Reason" required="true" 
+						 style="font-size:12px; width:200px;">
+						<f:selectItem itemLabel="Select Reason"
+							noSelectionOption="true" />
+						<f:selectItems var="rnl"
+							value="#{unitIncidentService.getUnitCloseReasonListValue().entrySet()}"
+							itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+			</h:selectOneMenu>
+			<br/>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msguCReason" for="uCReason"   style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>			
+ 			
+    		<br/>
+    		
+    		</h:panelGrid>	
+    		<br/>
+    		<br/>
+    		<h:commandButton class="btn btn-primary btn-sm" action="#{unitIncidentService.closeIncident()}"  value="Save"  update="msguCReason" oncomplete="if (!args.validationFailed) PF('dlgC').hide();"></h:commandButton>
+            <h:commandButton style="margin:15px 15px;" class="btn btn-primary btn-sm" type="button" value="Close"  onclick="PF('dlgC').hide();"/>
+        </p:dialog>
+
+        
+    </h:form>
+    
+    <h:form>
+        <p:dialog id="uRollback" header="Reassign" widgetVar="dlgR" modal="true">
+            <h:panelGrid columns="3" >
+    		<h:outputLabel for="aunit"><h:outputText style="color:red" value=" *"/>&nbsp;Unit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>		
+			<h:selectOneMenu id="aunit" value="#{unitIncidentService.rollbackUnit}" 
+						requiredMessage="Select Unit" required="true" 
+						 style="font-size:12px; width:200px;">
+						<f:selectItem itemLabel="Select Unit"
+							noSelectionOption="true" />
+						<f:selectItems var="rnl"
+							value="#{unitIncidentService.getUnitValue().entrySet()}"
+							itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+			</h:selectOneMenu>
+			<br/>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgaunit" for="aunit"   style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>			
+ 			
+    		<br/>
+    		<h:outputLabel ><h:outputText style="color:red" value=" *"/>&nbsp;Roll Back Reason:&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{unitIncidentService.uRollbackReason}" id="uRollbackReason" required="true" requiredMessage="Please enter rollback reason"></h:inputText>		
+    		<br/>
+    		<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msguRollbackReason" for="uRollbackReason"   style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>			
+ 			
+    		<br/>
+    		</h:panelGrid>	
+    		<br/>
+    		<br/>
+    		<p:messages id="messagesuRollback" />
+    		<p:commandButton class="btn btn-primary btn-sm" action="#{unitIncidentService.rollbackToOtherUnit()}"  value="Save" update="msgaunit msguRollbackReason" oncomplete="if (!args.validationFailed) PF('dlgR').hide();"  ></p:commandButton>
+            <h:commandButton style="margin:15px 15px;" class="btn btn-primary btn-sm" type="button" value="Close"  onclick="PF('dlgR').hide();"/>
+        </p:dialog>
+
+        
+    </h:form>
+        <h:form>
+        <p:dialog id="iRollback" header="Roll Back" widgetVar="dlgRi" modal="true">
+            <h:panelGrid columns="3" >
+    		
+    		<h:outputLabel ><h:outputText style="color:red" value=" *"/>&nbsp;Roll Back Reason:&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{unitIncidentService.iRollbackReason}" id="iRollbackReason" required="true" requiredMessage="Please enter rollback reason"></h:inputText>		
+    	
+    		<br/>
+    		<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgiRollbackReason" for="iRollbackReason"   style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>			
+ 			
+    		<br/>
+    		</h:panelGrid>	
+    		<br/>
+    		<br/>
+    		<p:commandButton class="btn btn-primary btn-sm" action="#{unitIncidentService.rollbackToIRT()}"  value="Save" update="msgiRollbackReason" oncomplete="if (!args.validationFailed) PF('dlgRi').hide();" ></p:commandButton>
+            <h:commandButton style="margin:15px 15px;" class="btn btn-primary btn-sm" type="button" value="Close"  onclick="PF('dlgRi').hide();"/>
+        </p:dialog>
+
+        
+    </h:form>
+    
+     
+        <h:form>
+        <p:dialog id="vendor" header="Inform Vendor" widgetVar="dlgV" modal="true">
+            <h:panelGrid columns="3" >
+    		
+    		<h:outputLabel ><h:outputText style="color:red" value=" *"/>&nbsp;Vendor Name:&nbsp;&nbsp;&nbsp;</h:outputLabel>
+    		<h:selectOneMenu id="vName" value="#{unitIncidentService.vName}" 
+						requiredMessage="Select Vendor" required="true" 
+						 style="font-size:12px; width:200px;">
+						<f:selectItem itemLabel="Select Unit"
+							noSelectionOption="true" />
+						<f:selectItems var="rnl"
+							value="#{unitIncidentService.getVendorListValue().entrySet()}"
+							itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+			</h:selectOneMenu>
+    		<br/>
+    		<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgvName" for="vName"   style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>			
+ 			
+    		<br/>
+    		<h:outputLabel ><h:outputText style="color:red" value=" *"/>&nbsp;Vendor Email:&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{unitIncidentService.vEmail}" id="vEmail" required="true" requiredMessage="Please enter email address"></h:inputText>		
+    		<br/>
+    		<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgvEmail" for="vEmail"   style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>			
+ 			
+    		<br/>
+    		<h:outputLabel ><h:outputText style="color:red" value=" *"/>&nbsp;Email Subject:&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{unitIncidentService.vSubject}" id="vSubject" required="true" requiredMessage="Please enter subject for email"></h:inputText>		
+    		<br/>
+    		<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgvSubject" for="vSubject"   style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>			
+ 			
+    		<br/>
+    		<br/>
+    		
+    		<h:outputLabel ><h:outputText style="color:red" value=" *"/>&nbsp;Email Content:&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputTextarea value="#{unitIncidentService.vContent}" id="vContent" required="true" requiredMessage="Please enter email content" rows="8" cols="22"></h:inputTextarea>		
+    		<br/>
+    		<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgvContent" for="vContent"   style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>			
+ 			
+    		<br/>
+    		</h:panelGrid>	
+    		<br/>
+    		<br/>
+    		<p:commandButton class="btn btn-primary btn-sm"   value="Save" action="#{unitIncidentService.informToVendor()}" update="msgvName msgvEmail msgvSubject msgvContent" oncomplete="if (!args.validationFailed) PF('dlgV').hide();" ></p:commandButton>
+            <h:commandButton style="margin:15px 15px;" class="btn btn-primary btn-sm" type="button" value="Close"  onclick="PF('dlgV').hide();"/>
+        </p:dialog>
+
+        
+    </h:form>
+    
+    <h:form>
+        <p:dialog id="addDependency" header="Add Dependency" widgetVar="dep" modal="true">
+            <h:panelGrid columns="9" >
+            <h:outputLabel for="dunit"><h:outputText style="color:red" value=" *"/>&nbsp;Dependent Unit:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:selectOneMenu id="dunit" value="#{unitIncidentService.depdUnit}"
+						requiredMessage="Select Dependent Unit" required="true"
+						dynamic="true" style="font-size:12px; width:200px;">
+						<f:selectItem itemLabel="Select Dependent Unit"
+							noSelectionOption="true" />
+						<f:selectItems var="rnl"
+							value="#{unitIncidentService.getUnitListValue().entrySet()}"
+							itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+						
+			</h:selectOneMenu>	
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>	
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>	
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel ></h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			
+			<br/>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgdunit" for="dunit" update="dunit"  style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>			
+ 			<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>
+ 				<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 		
+			<br/>
+            <h:outputLabel>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel >&nbsp;Working Days:</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel >&nbsp;Hours:</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel >&nbsp;Minitues:</h:outputLabel>			
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			<br/>
+    		<h:outputLabel >&nbsp;Target Dependency Completion time:&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{unitIncidentService.dWorkingDays}" id="twd" ></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{unitIncidentService.dHours}" id="thours" ></h:inputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputText value="#{unitIncidentService.dMinutes}" id="tmin"></h:inputText>			
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			<br/>
+			<h:outputLabel for="dpriority"><h:outputText style="color:red" value=" *"/>&nbsp;Priority:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:selectOneMenu id="dpriority" value="#{unitIncidentService.depdPriority}" required="true"
+						requiredMessage="Select Priority Level"
+						dynamic="true" style="font-size:12px; width:200px;">
+						<f:selectItem itemLabel="Select PriorityLevel"
+							noSelectionOption="true" />
+						<f:selectItems var="rnl"
+							value="#{unitIncidentService.getPriorityLevelValues().entrySet()}"
+							itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+						
+			</h:selectOneMenu>	
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>	
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>	
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel ></h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+    		
+    		<br/>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgdpriority" for="dpriority" update="dpriority"  style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>			
+ 			<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>
+ 				<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+    		<br/>
+    		<h:outputLabel for="ddes"><h:outputText style="color:red" value=" *"/>&nbsp;Dependency Description:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:inputTextarea value="#{unitIncidentService.depdDes}" id="ddes" style="width:250px" required="true" requiredMessage="Enter Description"></h:inputTextarea>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>	
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>	
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel ></h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>	
+    		<br/>
+    		<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgddes" for="ddes" update="ddes"  style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>			
+ 			<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>
+ 				<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+    		<br/>
+    		</h:panelGrid>	
+    		<br/>
+    		<br/>
+    		<p:commandButton class="btn btn-primary btn-sm" action="#{unitIncidentService.addDependecyForIncident()}"   value="Submit" update="msgdunit msgdpriority msgddes" oncomplete="if (!args.validationFailed) PF('dep').hide();" >
+    		
+    		</p:commandButton>
+			<h:commandButton style="margin:15px 15px;" class="btn btn-primary btn-sm"   value="Reset" immediate="true" ></h:commandButton>
+            <p:commandButton style="margin:15px 15px;" value="Close"  onclick="PF('dep').hide();"/>
+        </p:dialog>
+
+        
+    </h:form>
+	</div>	
+	
+	 <script>
+
+		$(document).ready(function() {
+			
+		    $('#example').DataTable( {
+		        "pagingType": "full_numbers"
+		    } );
+		    
+		    
+		} );
+		
+
+
+		
+	</script>				
+   	</ui:define> 
+</ui:composition> 
+
+ </h:body>
+
+</html>

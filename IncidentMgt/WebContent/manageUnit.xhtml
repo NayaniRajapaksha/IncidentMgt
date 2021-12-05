@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+</h:head>
+<h:body>
+    	
+    <ui:composition template="comTemplate.xhtml"> 
+
+	<ui:define name="content"> 
+<ui:param name="showForm"
+				value="#{(unitService.isNew)}" />
+		<div id="messages-container">
+			<div id="messages">
+					<p>Manage Units</p>
+			</div>
+		</div>
+			
+		<div  style="margin:15px 15px;">
+		<h:form id="uform1">	
+		
+	    	<div class="panel panel-default">
+	  			<div class="panel-body">
+	  				<div class="row">
+						<div class="col-sm">
+						
+								<h:commandButton  action="#{unitService.createNew()}" class="btn btn-primary btn-sm" name="btn-create-new-unit" value='Create New'
+								disabled="#{unitService.getIsNew() eq 'E'}" immediate="true">
+								<p:resetInput target=":#{p:component('form2')}" />
+								</h:commandButton>
+						</div>
+					</div>
+				</div>  
+	  		 </div>
+  				   
+  			 <div class="panel panel-default">
+  				<div class="panel-body">
+				<div class="row ">
+				<div class="col-sm">
+				
+					<table id="example" class="display" style="width:100%">
+					           <thead>
+					            <tr >
+					                <th class="small" >Unit Code</th>
+					                <th class="small" >Unit Name</th>
+					                <th class="small" >Unit Head</th>
+					                <th class="small" >Report To</th>
+					                <th class="small" >Status</th>
+					                <th class="small" >Action</th>
+					            </tr>
+					        </thead>
+					        <tbody>
+					        <ui:repeat value="${unitService.listUnits()}" var="unit">
+								<tr>
+									<td class="small">${unit.unitCode}</td>
+									<td class="small">${unit.unitName}</td>
+									<td class="small">${unit.unitHead}</td>
+									<td class="small">${unit.unitReportTo}</td>
+									
+									 <c:choose>
+					                <c:when test="${unit.unitStatus == 'A'}">
+					                	<td class="small" >Active</td>
+					                </c:when>
+					                <c:otherwise>
+					                	<td class="small" >Inactive</td>
+					                </c:otherwise>
+					                </c:choose>
+									<td class="small"><h:commandButton id="cb2" action="#{unitService.getUnitByCode(unit.id)}" value="Edit" name="btn-edit-unit" class="btn btn-primary btn-xs"
+									disabled="#{unitService.getIsNew() eq 'N'}" >
+ 										
+									
+									</h:commandButton></td>
+								</tr>
+							</ui:repeat>
+					            		   
+  				   			  </tbody>
+					        <tfoot>
+					            <tr >
+					                <th class="small" >Unit Code</th>
+					                <th class="small" >Unit Name</th>
+					                <th class="small" >Unit Head</th>
+					                <th class="small" >Report To</th>
+					                <th class="small" >Status</th>
+					                <th class="small" >Action</th>
+					            </tr>
+					        </tfoot>
+					       
+					</table>
+					
+				</div>
+				</div>
+				</div>
+			</div>
+  			</h:form>	   
+  		
+  	
+  	
+<h:form id="uform2">
+<p:messages id="messages" showDetail="true" closable="true" autoUpdate="true">
+
+        </p:messages>
+  <p:outputPanel id="form2Panel" rendered="#{unitService.getIsNew() eq 'N' or unitService.getIsNew() eq 'E'}" style="font-size:12px">
+  
+  	<div class="panel panel-danger" id="formData"  >
+  		<c:if test="#{unitService.getIsNew() eq 'N'}">
+			<div class="panel-heading" id="x"> Create Unit</div>
+		</c:if>
+		<c:if test="#{unitService.getIsNew() eq 'E'}">
+			<div class="panel-heading" id="x"> Edit Unit</div>
+		</c:if>
+    		<div class="panel-body"> 
+    			<h:panelGrid columns="7" >
+		
+					<h:outputLabel for="unitId"><h:outputText style="color:red" value=" *"/>&nbsp;Unit Code:</h:outputLabel>
+					<h:inputText id="unitId"  value="#{unit.unitCode}" required="true" 
+						    requiredMessage=" This is required field" ></h:inputText>
+					<h:message for = "unitId" style = "color:red" />
+					<h:outputLabel for="unitName"><h:outputText style="color:red" value=" *"/>Unit Name:</h:outputLabel>
+					<h:inputText id="unitName"  value="#{unit.unitName}" required="true" 
+						      requiredMessage=" This is required field" ></h:inputText>
+					<h:message for = "unitName" style = "color:red" />
+					<br/>
+					<br/>
+		
+					<h:outputLabel for="inputUhServiceNo"><h:outputText style="color:red" value=" *"/>&nbsp;Unit Head:</h:outputLabel>
+					<h:inputText id="inputUhServiceNo" value="#{unit.unitHead}" required="true" requiredMessage=" This is required field"></h:inputText>
+					<h:outputLabel>&nbsp;&nbsp;&nbsp;<h:outputText style="color:red" value=" *"/></h:outputLabel>
+					<h:outputLabel ></h:outputLabel>
+					 <h:outputText id="inputUhName"  />
+					 <h:message for = "inputUhServiceNo" style = "color:red" />
+					<br/>
+					<br/>
+		
+					<h:outputLabel for="inputRServiceNo">&nbsp;Report To:</h:outputLabel>
+					<h:inputText id="inputRServiceNo"  value="#{unit.unitReportTo}" required="true" requiredMessage=" This is required field"></h:inputText>
+					<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+					<h:outputLabel ></h:outputLabel>
+					<h:outputText id="inputRName"  />
+					<h:message for = "inputRServiceNo" style = "color:red" />
+					<br/>
+					<br/>
+		
+					
+					
+					<h:outputLabel for="status">Status:</h:outputLabel>
+					<h:selectOneRadio id="status" value="#{unit.unitStatus}"  required="true">
+            					<f:selectItem itemLabel="Active" itemValue="A" />
+           						<f:selectItem itemLabel="Inactive" itemValue="I"/>
+          
+       				</h:selectOneRadio>
+       				<h:message for = "status" style = "color:red" />
+		       		<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+		       		<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+		       		<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+					<br/>
+					<br/>
+					<br/>
+					<br/>
+					<h:inputHidden value="#{unit.id}" ></h:inputHidden>
+					<h:commandButton action="#{unitService.save(unit)}" class="btn btn-primary btn-sm" value="Save" ></h:commandButton>
+					<h:commandButton style="margin:15px 15px;" action="#{unitService.cancel()}" class="btn btn-primary btn-sm" value="Cancel"
+					  immediate="true">
+					   		<p:resetInput target=":#{p:component('form2')}" />
+					  </h:commandButton>
+				</h:panelGrid>
+		    			
+    			
+    			
+				
+    	</div>
+  	</div>
+  		
+  </p:outputPanel>
+  </h:form>
+  	
+ 	</div>	 
+  			
+ <script>
+
+		$(document).ready(function() {
+			
+		    $('#example').DataTable( {
+		        "pagingType": "full_numbers"
+		    } );
+		    
+		    
+		} );
+		
+
+
+		
+	</script>   
+   	</ui:define> 
+</ui:composition> 
+
+ </h:body>
+
+</html>

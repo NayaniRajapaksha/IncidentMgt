@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>  
+<h:head>
+<style>
+#loading {
+	display: none;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	margin-left: auto;
+	margin-right: auto;
+	z-index: 1500;
+}
+
+
+
+</style>
+<script>
+
+	window.onload = function () {
+	document.getElementsByClassName("resetButt")[0].click();
+	}
+</script>
+</h:head>  
+
+</h:head>  
+<h:body> 
+<ui:composition template="comTemplate.xhtml"> 
+<ui:define name="content">  
+<div id="messages-container">
+			<div id="messages">
+					<p>Reports</p>
+			</div>
+		</div>
+		
+		<div  style="margin:15px 15px;">
+		<div id="loading"
+		style="background: url('resources/images/icons/loading.gif')no-repeat center center; background-position: 190px 30px;"></div>
+		<h:form id="formReport">	
+		<p:outputPanel id="ReportPanel"  style="font-size:12px"  >
+		<h:panelGrid columns="7" >
+		
+		<h:outputLabel ><h:outputText style="color:red" value=" *"/>&nbsp;Report Name:</h:outputLabel>
+		<h:selectOneMenu id="reportList" value="#{reportService.reportName}" 
+						requiredMessage="Select Report Name" required="true" 
+						 style="font-size:12px; width:200px;">
+						<f:selectItem itemLabel="Select Report Name"
+							noSelectionOption="true" />
+						<f:selectItems var="rnl"
+							value="#{reportService.getReportListValue().entrySet()}"
+							itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+						<f:ajax listener="#{reportService.valueChangeReportType()}" render="TPPanel ISPanel USPanel VSPanel ITPanel btnSearch btngenerate" />
+						 <p:ajax update="msgreportList" />
+		</h:selectOneMenu>
+		<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+		<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 		<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+		<br/>
+		
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgreportList" for="reportList"   style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>			
+ 			<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 		<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+		<br/>
+		
+		<h:outputLabel ><h:outputText style="color:red" value=" *"/>&nbsp;From Date:</h:outputLabel>
+		<p:calendar	    binding="#{passFromdate}"
+						value="#{reportService.dateFrom}" 
+						pattern="dd/MM/yyyy"
+						maxdate="#{reportService.today}" id="fDate" required="true"
+						requiredMessage="Value is required"
+						converterMessage="test">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+						<p:ajax 
+							event="dateSelect" update="msgfDate"/>
+		</p:calendar>
+		<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+		<h:outputLabel ><h:outputText style="color:red" value=" *"/>&nbsp;To Date:</h:outputLabel>
+		<p:calendar	    binding="#{passTodate}"
+						value="#{reportService.dateTo}" 
+						pattern="dd/MM/yyyy"
+						maxdate="#{reportService.today}" id="tDate" required="true"
+						requiredMessage="Value is required"
+						converterMessage="test">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+						<p:ajax 
+							event="dateSelect" update="msgtDate"/>
+		</p:calendar>
+		<h:outputLabel id="btnSearch">&nbsp;&nbsp;&nbsp;<h:commandButton  class="btn btn-primary btn-sm"  action="#{reportService.searchIncidentTicket()}"  value="Search"  rendered="#{reportService.getReportType() eq 'IT'}"></h:commandButton></h:outputLabel>
+		<br/>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgfDate" for="fDate"   style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>			
+ 			<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgtDate" for="tDate"   style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>			
+ 		<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+		
+		<br/>
+			
+		</h:panelGrid>
+		
+		 <p:separator/>
+		 <p:outputPanel id="TPPanel">
+		 <p:outputPanel id="TeamPerformancePanel"  style="font-size:12px" rendered="#{reportService.getReportType() eq 'TP'}" >
+		 <h5>Team Member Performance</h5>
+		<h:panelGrid columns="6" >
+		
+			<h:outputLabel ><h:outputText style="color:red" value=" *"/>&nbsp;Unit Name:</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:selectOneMenu id="unit" value="#{reportService.unitName}" 
+							requiredMessage="Select Unit Name" required="true" 
+							 style="font-size:12px; width:200px;">
+							<f:selectItem itemLabel="Select Unit Name"
+								noSelectionOption="true" />
+							<f:selectItems var="rnl"
+								value="#{reportService.getUnitListValue().entrySet()}"
+								itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+					<f:ajax listener="#{reportService.getUnitMemberValues()}" render="teamMember" /> 
+					<p:ajax
+						update="msgunit" /> 		 
+			</h:selectOneMenu>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgunit" for="unit"   style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>			
+ 			
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			<h:outputLabel >&nbsp;Team Member:</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:selectOneMenu id="teamMember" value="#{reportService.teamMemberName}"  
+							 style="font-size:12px; width:200px;">
+							<f:selectItem itemLabel="All"
+								noSelectionOption="true" />
+							<f:selectItems var="rnl"
+								value="#{reportService.getUnitMemberValue().entrySet()}"
+								itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+							 
+			</h:selectOneMenu>
+			<h:outputLabel>&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;</h:outputLabel>
+		</h:panelGrid>	
+		</p:outputPanel>
+		</p:outputPanel>
+		
+		<p:outputPanel id="ISPanel">
+		 <p:outputPanel id="IncidentSummaryPanel"  style="font-size:12px" rendered="#{reportService.getReportType() eq 'IS'}" >
+		 <h5>Incident Summary</h5>
+		<h:panelGrid columns="6" >
+		
+			<h:outputLabel ><h:outputText style="color:red" value=" *"/>&nbsp;Report Type:</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:selectOneMenu id="reportTyList" value="#{reportService.reportCategory}" 
+							requiredMessage="Select Report Type" required="true" 
+							 style="font-size:12px; width:200px;">
+							<f:selectItem itemLabel="Select Report Type"
+								noSelectionOption="true" />
+							<f:selectItems var="rnl"
+								value="#{reportService.getReportTypeListValue().entrySet()}"
+								itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+					<f:ajax listener="#{reportService.valueChangeSummaryReportType()}" />
+					<p:ajax
+						update="msgreportTyList" />
+							 
+			</h:selectOneMenu>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msgreportTyList" for="reportTyList"   style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>						
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			<h:outputLabel ><h:outputText style="color:red" value=" *"/>&nbsp;Unit Name:</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:selectOneMenu id="inunit" value="#{reportService.unitName}" 
+								requiredMessage="Select Unit Name" required="#{reportService.reportCategory eq '1'}"  
+							 style="font-size:12px; width:200px;">
+							<f:selectItem itemLabel="Select Unit Name"
+								noSelectionOption="true" />
+							<f:selectItems var="rnl"
+								value="#{reportService.getUnitListValue().entrySet()}"
+								itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+							<f:ajax listener="#{reportService.getUnitMemberValues()}" render="inteamMember" />  
+							 <p:ajax update="msginunit" />
+			</h:selectOneMenu>
+			<h:outputLabel >&nbsp;Incident Status:</h:outputLabel>
+			<h:selectOneMenu id="incidentStatus" value="#{reportService.incidentStatus}"   
+							 style="font-size:12px; width:200px;">
+							<f:selectItem itemLabel="Select Incident Status"
+								noSelectionOption="true" />
+							<f:selectItems var="rnl"
+								value="#{reportService.getIncidentStatusValues().entrySet()}"
+								itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+							 
+			</h:selectOneMenu> 
+			<br/>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;<h:message id="msginunit" for="inunit"   style="color: red"/> &nbsp;&nbsp;&nbsp;</h:outputLabel>						
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			<h:outputLabel >&nbsp;Team Member:</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:selectOneMenu id="inteamMember" value="#{reportService.teamMemberName}"  
+							 style="font-size:12px; width:200px;">
+							<f:selectItem itemLabel="All"
+								noSelectionOption="true" />
+							<f:selectItems var="rnl"
+								value="#{reportService.getUnitMemberValue().entrySet()}"
+								itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+							 
+			</h:selectOneMenu>
+			<h:outputLabel >&nbsp;Incident Location:</h:outputLabel>
+			<h:selectOneMenu id="location" value="#{reportService.incidentLocation}" 
+							 style="font-size:12px; width:200px;">
+							<f:selectItem itemLabel="All"
+								noSelectionOption="true" />
+							<f:selectItems var="rnl"
+								value="#{reportService.getBranchValues().entrySet()}"
+								itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+							 
+			</h:selectOneMenu>
+			
+			<br/>
+			<br/>
+			<h:outputLabel >&nbsp;Impact Level:</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:selectOneMenu id="impact" value="#{reportService.impactLevel}" 
+							 style="font-size:12px; width:200px;">
+							<f:selectItem itemLabel="All"
+								noSelectionOption="true" />
+							<f:selectItems var="rnl"
+								value="#{reportService.getImpactLevelValue().entrySet()}"
+								itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+							 
+			</h:selectOneMenu>
+			<h:outputLabel >&nbsp;Urgency:</h:outputLabel>
+			<h:selectOneMenu id="urgency" value="#{reportService.urgency}"  
+							 style="font-size:12px; width:200px;">
+							<f:selectItem itemLabel="All"
+								noSelectionOption="true" />
+							<f:selectItems var="rnl"
+								value="#{reportService.getUrgencyValue().entrySet()}"
+								itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+							 
+			</h:selectOneMenu>
+			<br/>
+			<br/>
+			<h:outputLabel >&nbsp;Incident Type:</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:selectOneMenu id="IncType" value="#{reportService.typeName}" 
+							 style="font-size:12px; width:200px;">
+							<f:selectItem itemLabel="All"
+								noSelectionOption="true" />
+							<f:selectItems var="rnl"
+								value="#{reportService.getIncidentTypeValue().entrySet()}"
+								itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+							 <f:ajax listener="#{reportService.valueChangeIncidentType()}" render="IncSubType" /> 
+			</h:selectOneMenu>
+			<h:outputLabel >&nbsp;Incident Sub Type:</h:outputLabel>
+			<h:selectOneMenu id="IncSubType" value="#{reportService.subTypeName}"  
+							 style="font-size:12px; width:200px;">
+							<f:selectItem itemLabel="All"
+								noSelectionOption="true" />
+							<f:selectItems var="rnl"
+								value="#{reportService.getIncidentSubTypeValue().entrySet()}"
+								itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+							 
+			</h:selectOneMenu>
+			
+		</h:panelGrid>	
+		</p:outputPanel>
+		</p:outputPanel>
+		
+	
+		<p:outputPanel id="USPanel">
+		 <p:outputPanel id="UnitSummaryPanel"  style="font-size:12px" rendered="#{reportService.getReportType() eq 'US'}" >
+		 <h5>Unit Summary</h5>
+		<h:panelGrid columns="6" >
+		
+			<h:outputLabel ><h:outputText style="color:red" value=" *"/>&nbsp;Unit Name:</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:selectOneMenu id="unitUs" value="#{reportService.unitName}" 
+							 style="font-size:12px; width:200px;">
+							<f:selectItem itemLabel="All"
+								noSelectionOption="true" />
+							<f:selectItems var="rnl"
+								value="#{reportService.getUnitListValue().entrySet()}"
+								itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+					 		 
+			</h:selectOneMenu>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+ 			<h:outputLabel>&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<br/>
+			
+		</h:panelGrid>	
+		</p:outputPanel>
+		</p:outputPanel>
+		
+		
+		 <p:outputPanel id="VSPanel">
+		 <p:outputPanel id="VendorPanel"  style="font-size:12px"  rendered="#{reportService.getReportType() eq 'VS'}">
+		 <h5>Vendor Summary</h5>	
+		<h:panelGrid columns="6" >
+		
+			
+			<h:outputLabel >&nbsp;Vendor:</h:outputLabel>
+			<h:selectOneMenu id="vendor" value="#{reportService.vendor}" 
+							 style="font-size:12px; width:200px;">
+							<f:selectItem itemLabel="All"
+								noSelectionOption="true" />
+							<f:selectItems var="rnl"
+								value="#{reportService.getIncidentStatusValues().entrySet()}"
+								itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+							 
+			</h:selectOneMenu>			
+			<h:outputLabel >&nbsp;Vendor Progress:</h:outputLabel>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+			<h:selectOneMenu id="vprogress" value="#{reportService.vendorProgress}"  
+							 style="font-size:12px; width:200px;">
+							<f:selectItem itemLabel="All"
+								noSelectionOption="true" />
+							<f:selectItems var="rnl"
+								value="#{reportService.getUnitListValue().entrySet()}"
+								itemLabel="#{rnl.value}" itemValue="#{rnl.key}" />
+							 
+			</h:selectOneMenu>
+			
+		</h:panelGrid>	
+		</p:outputPanel>
+		</p:outputPanel>
+		
+		<p:outputPanel id="ITPanel">
+		 <p:outputPanel id="ticketPanel"  style="font-size:12px"  rendered="#{reportService.getReportType() eq 'IT'}">
+		 <h5>Incident Ticket</h5>
+		 <h:panelGrid columns="3" >
+    		<h:outputLabel>&nbsp;Incident Info:</h:outputLabel>
+    		<h:outputLabel>&nbsp;</h:outputLabel>
+    		<br/>
+    		<br/>
+    		<p:dataTable id="ticketDT" var="ticketList"
+							value="${reportService.getSearchTicketlist()}"
+							rowKey="#{ticketList.incident_number}"
+							style="margin-bottom:0; width:900px"  rows="10"
+							selectionMode="single">
+							
+
+
+							<p:column headerText="Occured Date" style="width:80px">
+								<h:outputText value="#{ticketList.occured_date}" />
+							</p:column>
+							<p:column headerText="Incident No" style="width:80px">
+								<h:outputText value="#{ticketList.incident_number}" />
+							</p:column>
+							<p:column headerText="Location" style="width:80px">
+								<h:outputText value="#{ticketList.br_name}" />
+							</p:column>
+							<p:column headerText="Reported By" style="width:50px">
+								<h:outputText value="#{ticketList.rep_emp_name}" />
+							</p:column>
+							<p:column  style="width:35px">
+								<h:commandButton class="btn btn-primary btn-sm"   value="View" 
+								action="#{reportService.printIncidentTicket('pdf',ticketList.incident_number)}" >
+									<f:ajax execute="@form viewPanel" onevent="viewTrigger" onerror="handle"
+										render="@form"></f:ajax>
+								
+								</h:commandButton>
+							</p:column>
+
+				</p:dataTable>
+					
+			<h:outputLabel>&nbsp;</h:outputLabel>			
+    		<br/>
+    		<br/>
+    		</h:panelGrid>	
+		 
+		 
+		 
+		 
+		 </p:outputPanel>
+		</p:outputPanel>
+		
+		
+		<h:outputLabel id="btngenerate"><h:commandButton  styleClass="buttdis" style="margin:15px 15px;"  class="btn btn-primary btn-sm" value="Generate"
+					action="#{reportService.requestOutput('pdf',true)}" rendered="#{reportService.getIsNew() ne 'N'}" >
+					<f:ajax execute="@form viewPanel" onevent="viewTrigger" onerror="handle"
+						render="@form"></f:ajax>
+				</h:commandButton>
+		</h:outputLabel>
+		<h:commandButton style="margin:15px 15px;" styleClass="resetButt" action="#{reportService.cancel()}" class="btn btn-primary btn-sm"  value="Reset" immediate="true">
+			<p:resetInput target=":#{p:component('formReport')}" />
+		</h:commandButton>	
+		
+		</p:outputPanel>
+		
+		
+		<p:outputPanel id="viewPanel">
+
+			<p:dialog width="1200px" id="pdfDialogId" min-height="100px"
+				position="center top" modal="true" header="PDF View"
+				widgetVar="pdfDialog" resizable="false">
+				<p:outputPanel styleClass="viewPanelStyCl" id="viewPanel_a">
+
+					<script>
+		
+		
+				function view() {
+						   
+						
+					   
+					   /*  x.setAttribute("src", '#{commonUtils2.pdfpath}#toolbar=0'); */
+					   /*  x.setAttribute("src", '#{commonUtils2.pdfpath}'); */
+					   var mybool = #{reportCommonUtils.pdfok};
+					  
+					   if(mybool){/* alert(66);  */
+					   var x = document.createElement("IFRAME");
+					   x.setAttribute("id", "myframe1"); 
+					   x.setAttribute("src", '#{reportCommonUtils.pdfpath}');
+					   x.setAttribute("width", "100%");
+					   x.setAttribute("height", "560px");
+					   x.setAttribute("frameBorde", "0px");
+					   document.getElementsByClassName("viewPanelStyCl")[0].appendChild(x);
+					    }
+					    else{ /* alert(68);  */
+					    var para = document.createElement("p");
+					    var node = document.createTextNode("#{reportCommonUtils.errMsg}");
+					    para.appendChild(node);
+						document.getElementsByClassName("viewPanelStyCl")[0].appendChild(para);
+						    }
+					  
+					 
+ 					   buttena();
+					  
+ 					 //  document.getElementsByClassName("resetButt")[0].click();
+					  
+					}
+				
+			 
+				</script>
+
+				</p:outputPanel>
+
+			</p:dialog>
+
+		</p:outputPanel>
+		
+		<p:outputPanel id="wasazz">
+
+			
+
+			<p:remoteCommand name="remortComToView"
+				update="@([id$=viewPanel] , form)"
+				oncomplete=" if(!args.validationFailed){view(); PF('pdfDialog').show()}else{buttena();}"></p:remoteCommand>
+
+		</p:outputPanel>
+		</h:form>
+		
+		
+		
+	<script>
+
+
+	
+	
+		function viewTrigger(data) {
+			  
+				if(data.status == 'complete') { 
+					
+					remortComToView();
+					/* alert(268);  */
+				}
+			   
+		}
+
+		function handle(data) {
+			  
+			console.log("Error Description: "+data.description);
+			console.log("Error Name: "+data.errorName);
+			console.log("Error errorMessage: "+data.errorMessage);
+		 	console.log("httpError: "+data.httpError);
+			console.log("emptyResponse: "+data.emptyResponse);
+			console.log("maleformed: "+data.maleformed);
+			console.log("serverError: "+data.serverError)
+		   
+		}
+
+	</script>
+	
+	 	<script>
+	function busyCusoron(){/*alert(26);*/
+		document.body.style.cursor = 'wait';
+		$(this).prop('disabled', true); //disable
+		$('#loading').css({'display':'block'});
+			
+		
+	}
+
+	function buttena(){/* alert(27); */
+		//var x = document.getElementsById("buttdis");
+		var x = document.getElementsByClassName("buttdis");
+		/*var y = document.querySelectorAll(".buttdis");*/
+		document.body.style.cursor = 'default';
+		$(this).prop('disabled', false); //disable
+		//x[0].disabled = false;
+		$('#loading').css({'display':'none'});
+
+	}
+
+</script> 
+		
+		</div>
+
+</ui:define> 
+</ui:composition> 	  
+</h:body>  
+</html>  

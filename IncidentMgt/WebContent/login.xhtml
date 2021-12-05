@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:h="http://java.sun.com/jsf/html">
+<h:head>
+<link href="resources/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+
+ <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<title>login</title>
+</h:head>
+
+<h:body>
+	<h:form>
+	<p:outputPanel id="form2Panel"  style="font-size:14px;width:40%;margin:15% 30%;" >
+		<div class="panel panel-danger"   >
+
+		<div class="panel-heading" id="x"> Login</div>
+
+
+    		<div class="panel-body"> 
+<!-- 		<h3> Login </h3> -->
+
+		<h:outputText value="Username" ></h:outputText>
+			<h:outputLabel>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+		<h:inputText id="username" value="#{login.user}"></h:inputText>
+	
+		<h:message for="username"></h:message>
+		<br /><br />
+		
+		<h:outputText value="Password" ></h:outputText>
+		<h:outputLabel>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h:outputLabel>
+		<h:inputSecret id="password" value="#{login.pwd}"></h:inputSecret>
+		
+		<h:message for="password"></h:message>
+		<br /><br />
+		
+		<h:commandButton action="#{login.validateUsernamePassword}"
+			value="Login"></h:commandButton>
+		<h:message showDetail="true" ></h:message>	
+		<p:messages id="messages" showDetail="true" closable="true" autoUpdate="true">
+
+        </p:messages>
+       	</div>
+  	</div>
+  	</p:outputPanel>	
+	</h:form>
+</h:body>
+</html>

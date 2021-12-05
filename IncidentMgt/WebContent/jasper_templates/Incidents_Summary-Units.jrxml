@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.3.0.final using JasperReports Library version 6.3.0  -->
+<!-- 2021-09-04T00:09:00 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Incidents_Summary-Units" pageWidth="864" pageHeight="792" whenNoDataType="AllSectionsNoDetail" columnWidth="824" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryNewPage="true" isSummaryWithPageHeaderAndFooter="true" uuid="305f7e18-03e8-45b8-883e-03b20420632b">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="inch"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="INCIDENT_MANAGEMENT"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="inch"/>
+	<parameter name="dateTo" class="java.lang.String"/>
+	<parameter name="dateFrom" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="wrc" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="query" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+		<defaultValueExpression><![CDATA["SELECT * FROM RP_INCIDENT_SUMMARY_UNIT_V WHERE "+$P{wrc}+ " ORDER BY UNIT_NAME"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="LoginUser" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[$P!{query}]]>
+	</queryString>
+	<field name="UNIT_NAME" class="java.lang.String"/>
+	<field name="INC_ID" class="java.lang.Integer"/>
+	<field name="ASSIGNED_UNIT" class="java.lang.Integer"/>
+	<field name="STATUS" class="java.lang.String"/>
+	<field name="SOLVED_IN_TIME" class="java.lang.String"/>
+	<field name="CREATED_DATE" class="java.sql.Timestamp"/>
+	<variable name="V_CURRENT_PAGE_NUMBER" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+	</variable>
+	<variable name="group_Assign_Incidents" class="java.math.BigDecimal" resetType="Group" resetGroup="Group_unit_name" calculation="Count">
+		<variableExpression><![CDATA[$F{UNIT_NAME}]]></variableExpression>
+	</variable>
+	<variable name="grup_pending_incidents" class="java.math.BigDecimal" resetType="Group" resetGroup="Group_unit_name" calculation="Sum">
+		<variableExpression><![CDATA[($F{STATUS}.equals( "PWU" ) || $F{STATUS}.equals( "PWM" ) || $F{STATUS}.equals( "RBI" ))?1:0]]></variableExpression>
+	</variable>
+	<variable name="grup_On-hold_incidents" class="java.math.BigDecimal" resetType="Group" resetGroup="Group_unit_name" calculation="Sum">
+		<variableExpression><![CDATA[($F{STATUS}.equals( "OH" ) )?1:0]]></variableExpression>
+	</variable>
+	<variable name="grup_Reopened_incidents" class="java.math.BigDecimal" resetType="Group" resetGroup="Group_unit_name" calculation="Sum">
+		<variableExpression><![CDATA[($F{STATUS}.equals( "RBI" ) )?1:0]]></variableExpression>
+	</variable>
+	<variable name="grup_Closed_incidents" class="java.math.BigDecimal" resetType="Group" resetGroup="Group_unit_name" calculation="Sum">
+		<variableExpression><![CDATA[($F{STATUS}.equals( "CBI" ) )?1:0]]></variableExpression>
+	</variable>
+	<variable name="grup_Target_Within_Time_incidents" class="java.math.BigDecimal" resetType="Group" resetGroup="Group_unit_name" calculation="Sum">
+		<variableExpression><![CDATA[($F{STATUS}.equals( "RSLV" ) && $F{SOLVED_IN_TIME}.equals( "Y" ) )?1:0]]></variableExpression>
+	</variable>
+	<variable name="grup_Target_After_Time_incidents" class="java.math.BigDecimal" resetType="Group" resetGroup="Group_unit_name" calculation="Sum">
+		<variableExpression><![CDATA[($F{STATUS}.equals( "RSLV" ) && $F{SOLVED_IN_TIME}.equals( "N" ) )?1:0]]></variableExpression>
+	</variable>
+	<group name="Group_unit_name">
+		<groupExpression><![CDATA[$F{UNIT_NAME}]]></groupExpression>
+		<groupFooter>
+			<band height="24">
+				<textField isBlankWhenNull="true">
+					<reportElement x="198" y="3" width="90" height="16" uuid="0d62b8dc-08c3-4ab2-9b35-fba8ebcedb87"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$V{grup_pending_incidents}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="108" y="3" width="90" height="16" uuid="1b6c4b2b-bf8e-4013-9f75-412b8be17761">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$V{group_Assign_Incidents}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="7" y="3" width="101" height="16" uuid="23e42b87-828f-4746-8160-7e582d0cfa9a">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</reportElement>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{UNIT_NAME}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="288" y="3" width="90" height="16" uuid="bf27ad45-06ea-4fcb-b168-611ca6ccb9fa"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$V{grup_On-hold_incidents}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="378" y="3" width="90" height="16" uuid="1c232561-e24c-40ba-9de8-f03c0c513873"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$V{grup_Reopened_incidents}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="468" y="3" width="90" height="16" uuid="3afe84b7-8b52-4ea8-9d8d-f1cb7872c285"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$V{grup_Reopened_incidents}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="558" y="3" width="90" height="16" uuid="f6c76dcb-7365-4551-b8f6-edbb7bc97407"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$V{grup_Closed_incidents}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="649" y="3" width="90" height="16" uuid="9938efde-44a8-4db2-8af3-bc7166801c08"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$V{grup_Target_Within_Time_incidents}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="739" y="3" width="90" height="16" uuid="9938dbaa-d7ee-4307-b623-2c9e295901f1"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$V{grup_Target_After_Time_incidents}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="5" y="27" width="824" height="21" uuid="6acd365d-4cbc-477e-9bde-2652e81c0348"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[INCIDENT SUMMARY UNIT REPORT ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="4" width="824" height="22" uuid="c46f1033-6213-45a8-aa9d-e76e30f86c16"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PEOPLE'S BANK ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="5" y="53" width="824" height="16" uuid="fa552883-c03a-47d4-88ff-f0ce79f4bec1"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA["From : "+$P{dateFrom}+"     To :  "+$P{dateTo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="46" splitType="Stretch">
+			<staticText>
+				<reportElement x="199" y="3" width="90" height="38" uuid="07b898e1-d823-4a32-8ea1-5b194bead4b3"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pending Incidents Count]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="470" y="3" width="90" height="38" uuid="cdc0d518-8e9b-4df4-a2fc-f9606569217a">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Closed]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="560" y="3" width="90" height="38" uuid="5648d222-84e6-4503-afdb-1c38f0ac5d1b"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Resolved Incidents Count]]></text>
+			</staticText>
+			<line>
+				<reportElement x="5" y="41" width="821" height="1" uuid="fd10b84c-f66d-4510-85d3-90efeb32560c">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="380" y="3" width="90" height="38" uuid="b52868ea-f752-4b0b-9c8b-028157a84dbd"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reopened Incidents Count]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="109" y="3" width="90" height="38" uuid="158ad4c0-7429-4034-8bcc-90123082c302"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Assign Incidents Count]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="649" y="3" width="90" height="38" uuid="4e3207e5-205e-4d60-a78d-78874db4cde7">
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Incidents Count Solved within the Target Time]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="3" width="90" height="38" uuid="08156fe2-ecee-40a1-86f7-29cbb47d5da8"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[On-hold IncidentsCount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="3" width="102" height="38" uuid="e7bd838a-3385-4bf8-a7dd-a96a5d8653cd">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Unit Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="739" y="3" width="90" height="38" uuid="aeb3090b-3ade-4c2e-8b4d-0479cb8e1e3b">
+					<property name="com.jaspersoft.studio.unit.x" value="inch"/>
+					<property name="com.jaspersoft.studio.unit.width" value="inch"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Incidents solved After the Target Time]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<columnFooter>
+		<band height="9" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="24">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="726" y="2" width="101" height="13" uuid="cb0a9002-1be5-4c97-bbff-039ddb61720d"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{LoginUser}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" evaluationTime="Auto" isBlankWhenNull="true">
+				<reportElement x="439" y="6" width="100" height="13" uuid="8ac80066-0496-46f3-ba44-45b6e097fe5a"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA["Page "+$V{V_CURRENT_PAGE_NUMBER}+" of "+$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="h:mm a">
+				<reportElement x="84" y="2" width="75" height="16" uuid="17fb6779-23b2-4326-ad0f-41445a39965c"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="10" y="2" width="73" height="16" uuid="1e3268f0-55e0-4e5d-bccf-84e96ede0296"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="20" splitType="Stretch"/>
+	</summary>
+</jasperReport>

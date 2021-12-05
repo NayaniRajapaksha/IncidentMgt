@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing 
+		infrastructure -->
+
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
+		up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+
+
+	<beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<beans:property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<beans:property name="url"
+			value="jdbc:mysql://localhost:3306/ims" />
+		<beans:property name="username" value="root" />
+		<beans:property name="password" value="1234" />
+	</beans:bean>
+
+	<!-- Hibernate 4 SessionFactory Bean definition -->
+	<beans:bean id="hibernate4AnnotatedSessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<beans:property name="dataSource" ref="dataSource" />
+		<beans:property name="annotatedClasses">
+			<beans:list>
+				<beans:value>com.ucsc.mit.model.Person</beans:value>
+				<beans:value>com.ucsc.mit.model.Unit</beans:value>
+				<beans:value>com.ucsc.mit.model.Vendor</beans:value>
+				<beans:value>com.ucsc.mit.model.IncidentType</beans:value>
+				<beans:value>com.ucsc.mit.model.IncidentSubType</beans:value>
+				<beans:value>com.ucsc.mit.model.Faq</beans:value>
+				<beans:value>com.ucsc.mit.model.Employee</beans:value>
+				<beans:value>com.ucsc.mit.model.Branch</beans:value>
+				<beans:value>com.ucsc.mit.model.UnitMember</beans:value>
+				<beans:value>com.ucsc.mit.model.IrtMember</beans:value>
+				<beans:value>com.ucsc.mit.model.Priority</beans:value>
+				<beans:value>com.ucsc.mit.model.Origin</beans:value>
+				<beans:value>com.ucsc.mit.model.IncidentTxn</beans:value>
+				<beans:value>com.ucsc.mit.model.TechAffectedArea</beans:value>
+				<beans:value>com.ucsc.mit.model.UnitCloseReason</beans:value>
+				<beans:value>com.ucsc.mit.model.Notification</beans:value>
+				<beans:value>com.ucsc.mit.model.IncidentProgressView</beans:value>
+				<beans:value>com.ucsc.mit.model.IrtCloseReason</beans:value>
+				<beans:value>com.ucsc.mit.model.IrtImpactLevel</beans:value>
+				<beans:value>com.ucsc.mit.model.IrtReminder</beans:value>
+				<beans:value>com.ucsc.mit.model.IrtUrgency</beans:value>
+				<beans:value>com.ucsc.mit.model.IrtIncidentTxn</beans:value>
+				<beans:value>com.ucsc.mit.model.IrtImpactUrgency</beans:value>
+				<beans:value>com.ucsc.mit.model.IncidentDetailView</beans:value>
+				<beans:value>com.ucsc.mit.model.UnitMemberTxn</beans:value>
+				<beans:value>com.ucsc.mit.model.TeamMemberView</beans:value>
+				<beans:value>com.ucsc.mit.model.IncidentStatus</beans:value>
+				<beans:value>com.ucsc.mit.model.Report</beans:value>
+				<beans:value>com.ucsc.mit.model.EmployeeDetailView</beans:value>
+				<beans:value>com.ucsc.mit.model.Dependency</beans:value>
+				<beans:value>com.ucsc.mit.model.UnitAssignHistoryView</beans:value>
+				<beans:value>com.ucsc.mit.model.VendorInformDetTxn</beans:value>
+				<beans:value>com.ucsc.mit.model.SimilarSolutionView</beans:value>
+				<beans:value>com.ucsc.mit.model.TeamMemPreformaceView</beans:value>
+				<beans:value>com.ucsc.mit.model.UnitIncidentSummaryView</beans:value>
+				<beans:value>com.ucsc.mit.model.VendorSummaryView</beans:value>
+				<beans:value>com.ucsc.mit.model.IncidentTicketView</beans:value>
+				<beans:value>com.ucsc.mit.model.NotifyLastSeen</beans:value>
+				<beans:value>com.ucsc.mit.model.IncidentUnitMemberView</beans:value>
+				<beans:value>com.ucsc.mit.model.UserGroupTxn</beans:value>
+				<beans:value>com.ucsc.mit.model.DependencyDetailView</beans:value>
+				<beans:value>com.ucsc.mit.model.DependencyStatus</beans:value>
+				<beans:value>com.ucsc.mit.model.DependencyCloseReason</beans:value>
+				<beans:value>com.ucsc.mit.model.IrtIncidentDetailView</beans:value>
+			</beans:list>
+		</beans:property>
+		<beans:property name="hibernateProperties">
+			<beans:props>
+				<beans:prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect
+				</beans:prop>
+				<beans:prop key="hibernate.show_sql">true</beans:prop>
+				<beans:prop key="hibernate.current_session_context_class">thread</beans:prop>
+				
+			</beans:props>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="personDAO"
+		class="com.ucsc.mit.dao.PersonDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="personService"
+		class="com.ucsc.mit.service.PersonServiceImpl">
+		<beans:property name="personDAO" ref="personDAO"></beans:property>
+	</beans:bean>
+	
+	<beans:bean id="unitDAO"
+		class="com.ucsc.mit.dao.UnitDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="unitService"
+		class="com.ucsc.mit.service.UnitServiceImpl">
+		<beans:property name="unitDAO" ref="unitDAO"></beans:property>
+	</beans:bean>
+	
+	<beans:bean id="vendorDAO"
+		class="com.ucsc.mit.dao.VendorDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="vendorService"
+		class="com.ucsc.mit.service.VendorService">
+		<beans:property name="vendorDAO" ref="vendorDAO"></beans:property>
+	</beans:bean>
+	
+	<beans:bean id="incidentTypeDAO"
+		class="com.ucsc.mit.dao.IncidentTypeDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+		<beans:property name="incidentSubTypeDAO" ref="incidentSubTypeDAO"></beans:property>
+	</beans:bean>
+	<beans:bean id="incidentSubTypeDAO"
+		class="com.ucsc.mit.dao.IncidentSubTypeDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+			
+	</beans:bean>
+	<beans:bean id="incidentTypeService"
+		class="com.ucsc.mit.service.IncidentTypeService">
+		<beans:property name="incidentTypeDAO" ref="incidentTypeDAO"></beans:property>
+		<beans:property name="incidentSubTypeDAO" ref="incidentSubTypeDAO"></beans:property>
+	</beans:bean>
+	
+	
+	<beans:bean id="faqDAO"
+		class="com.ucsc.mit.dao.FaqDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="faqService"
+		class="com.ucsc.mit.service.FaqService">
+		<beans:property name="faqDAO" ref="faqDAO"></beans:property>
+		<beans:property name="incidentTypeDAO" ref="incidentTypeDAO"></beans:property>
+		<beans:property name="incidentSubTypeDAO" ref="incidentSubTypeDAO"></beans:property>
+		<beans:property name="unitDAO" ref="unitDAO"></beans:property>
+	</beans:bean>
+	
+	<beans:bean id="employeeDAO"
+		class="com.ucsc.mit.dao.EmployeeDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="unitMemberDAO"
+		class="com.ucsc.mit.dao.UnitMemberDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="unitMemberService"
+		class="com.ucsc.mit.service.UnitMemberService">
+		<beans:property name="employeeDAO" ref="employeeDAO"></beans:property>
+		<beans:property name="unitMemberDAO" ref="unitMemberDAO"></beans:property>
+		<beans:property name="unitDAO" ref="unitDAO"></beans:property>
+	</beans:bean>
+	
+	<beans:bean id="irtMemberDAO"
+		class="com.ucsc.mit.dao.IrtMemberDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="branchDAO"
+		class="com.ucsc.mit.dao.BranchDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="userGroupDAO"
+		class="com.ucsc.mit.dao.UserGroupDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="irtService"
+		class="com.ucsc.mit.service.IrtMemberService">
+		<beans:property name="employeeDAO" ref="employeeDAO"></beans:property>
+		<beans:property name="irtMemberDAO" ref="irtMemberDAO"></beans:property>
+		<beans:property name="unitDAO" ref="unitDAO"></beans:property>
+		<beans:property name="branchDAO" ref="branchDAO"></beans:property>
+		<beans:property name="userGroupDAO" ref="userGroupDAO"></beans:property>
+	</beans:bean>
+	<beans:bean id="loginDAO"
+		class="com.ucsc.mit.dao.LoginDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	<beans:bean id="login"
+		class="com.ucsc.mit.service.LoginService">
+		<beans:property name="loginDAO" ref="loginDAO"></beans:property>
+		<beans:property name="employeeDetaliViewDAO" ref="employeeDetaliViewDAO"></beans:property>
+	</beans:bean>
+	
+	<beans:bean id="priorotyDAO"
+		class="com.ucsc.mit.dao.PriorotyDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="techAffectedAreaDAO"
+		class="com.ucsc.mit.dao.TechAffectedAreaDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="originDAO"
+		class="com.ucsc.mit.dao.OriginDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="unitCloseReasonDAO"
+		class="com.ucsc.mit.dao.UnitCloseReasonDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="incidentTxnDAO"
+		class="com.ucsc.mit.dao.IncidentTxnDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="incidentProgressViewDAO"
+		class="com.ucsc.mit.dao.IncidentProgressViewDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="notificationDAO"
+		class="com.ucsc.mit.dao.NotificationDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="employeeDetaliViewDAO"
+		class="com.ucsc.mit.dao.EmployeeDetaliViewDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+			
+	</beans:bean>
+	
+	<beans:bean id="dependencyDAO"
+		class="com.ucsc.mit.dao.DependencyDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+			
+	</beans:bean>
+	<beans:bean id="addIncidentService"
+		class="com.ucsc.mit.service.AddIncidentService">
+		<beans:property name="incidentTxnDAO" ref="incidentTxnDAO"></beans:property>
+		<beans:property name="unitCloseReasonDAO" ref="unitCloseReasonDAO"></beans:property>
+		<beans:property name="originDAO" ref="originDAO"></beans:property>
+		<beans:property name="techAffectedAreaDAO" ref="techAffectedAreaDAO"></beans:property>
+		<beans:property name="priorotyDAO" ref="priorotyDAO"></beans:property>
+		<beans:property name="employeeDAO" ref="employeeDAO"></beans:property>
+		<beans:property name="branchDAO" ref="branchDAO"></beans:property>
+		<beans:property name="incidentTypeDAO" ref="incidentTypeDAO"></beans:property>
+		<beans:property name="incidentSubTypeDAO" ref="incidentSubTypeDAO"></beans:property>
+		<beans:property name="incidentProgressViewDAO" ref="incidentProgressViewDAO"></beans:property>
+		<beans:property name="notificationDAO" ref="notificationDAO"></beans:property>
+	</beans:bean>
+	
+	<beans:bean id="irtReminderDAO"
+		class="com.ucsc.mit.dao.IrtReminderDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="irtUrgencyDAO"
+		class="com.ucsc.mit.dao.IrtUrgencyDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="irtCloseReasonDAO"
+		class="com.ucsc.mit.dao.IrtCloseReasonDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="irtImpactLevelDAO"
+		class="com.ucsc.mit.dao.IrtImpactLevelDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="irtIncidentTxnDAO"
+		class="com.ucsc.mit.dao.IrtIncidentTxnDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="irtImpactUrgencyDAO"
+		class="com.ucsc.mit.dao.IrtImpactUrgencyDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="unitMemberTxnDAO"
+		class="com.ucsc.mit.dao.UnitMemberTxnDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="incidentDetailViewDAO"
+		class="com.ucsc.mit.dao.IncidentDetailViewDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	
+	<beans:bean id="incidentStatusDAO"
+		class="com.ucsc.mit.dao.IncidentStatusDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="teamMemberViewDAO"
+		class="com.ucsc.mit.dao.TeamMemberViewDAOimpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="reportsDAO"
+		class="com.ucsc.mit.dao.ReportsDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="unitAssignHistoryViewDAO"
+		class="com.ucsc.mit.dao.UnitAssignHistoryViewDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="vendorInformDetTxnDAO"
+		class="com.ucsc.mit.dao.VendorInformDetTxnDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="similarSolutionDAO"
+		class="com.ucsc.mit.dao.SimilarSolutionDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="teamMemPreformaceViewDAO"
+		class="com.ucsc.mit.dao.TeamMemPreformaceViewDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="vendorSummaryViewDAO"
+		class="com.ucsc.mit.dao.VendorSummaryViewDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="unitSummaryViewDAO"
+		class="com.ucsc.mit.dao.UnitSummaryViewDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="incidentTicketViewDAO"
+		class="com.ucsc.mit.dao.IncidentTicketViewDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="notifyLastSeenDAO"
+		class="com.ucsc.mit.dao.NotifyLastSeenDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="incidentUnitMemberViewDAO"
+		class="com.ucsc.mit.dao.IncidentUnitMemberViewDAOImpl">
+		<beans:property name="sessionFactory"
+			ref="hibernate4AnnotatedSessionFactory" />
+	</beans:bean>
+	
+	<beans:bean id="assignIncidentService"
+		class="com.ucsc.mit.service.AssignIncidentService">
+		<beans:property name="incidentTxnDAO" ref="incidentTxnDAO"></beans:property>
+		<beans:property name="unitCloseReasonDAO" ref="unitCloseReasonDAO"></beans:property>
+		<beans:property name="originDAO" ref="originDAO"></beans:property>
+		<beans:property name="techAffectedAreaDAO" ref="techAffectedAreaDAO"></beans:property>
+		<beans:property name="priorotyDAO" ref="priorotyDAO"></beans:property>
+		<beans:property name="employeeDAO" ref="employeeDAO"></beans:property>
+		<beans:property name="branchDAO" ref="branchDAO"></beans:property>
+		<beans:property name="incidentTypeDAO" ref="incidentTypeDAO"></beans:property>
+		<beans:property name="incidentSubTypeDAO" ref="incidentSubTypeDAO"></beans:property>
+		<beans:property name="incidentProgressViewDAO" ref="incidentProgressViewDAO"></beans:property>
+		<beans:property name="notificationDAO" ref="notificationDAO"></beans:property>
+		<beans:property name="irtReminderDAO" ref="irtReminderDAO"></beans:property>
+		<beans:property name="irtUrgencyDAO" ref="irtUrgencyDAO"></beans:property>
+		<beans:property name="irtCloseReasonDAO" ref="irtCloseReasonDAO"></beans:property>
+		<beans:property name="irtImpactLevelDAO" ref="irtImpactLevelDAO"></beans:property>
+		<beans:property name="unitDAO" ref="unitDAO"></beans:property>
+		<beans:property name="faqDAO" ref="faqDAO"></beans:property>
+		<beans:property name="irtIncidentTxnDAO" ref="irtIncidentTxnDAO"></beans:property>
+		<beans:property name="irtImpactUrgencyDAO" ref="irtImpactUrgencyDAO"></beans:property>
+		<beans:property name="unitMemberTxnDAO" ref="unitMemberTxnDAO"></beans:property>
+		<beans:property name="teamMemberViewDAO" ref="teamMemberViewDAO"></beans:property>
+		<beans:property name="unitAssignHistoryViewDAO" ref="unitAssignHistoryViewDAO"></beans:property>
+		<beans:property name="similarSolutionDAO" ref="similarSolutionDAO"></beans:property>
+	</beans:bean>
+	
+	<beans:bean id="unitIncidentService"
+		class="com.ucsc.mit.service.UnitIncidentService">
+		<beans:property name="incidentTxnDAO" ref="incidentTxnDAO"></beans:property>
+		<beans:property name="unitCloseReasonDAO" ref="unitCloseReasonDAO"></beans:property>
+		<beans:property name="originDAO" ref="originDAO"></beans:property>
+		<beans:property name="techAffectedAreaDAO" ref="techAffectedAreaDAO"></beans:property>
+		<beans:property name="priorotyDAO" ref="priorotyDAO"></beans:property>
+		<beans:property name="employeeDAO" ref="employeeDAO"></beans:property>
+		<beans:property name="branchDAO" ref="branchDAO"></beans:property>
+		<beans:property name="incidentTypeDAO" ref="incidentTypeDAO"></beans:property>
+		<beans:property name="incidentSubTypeDAO" ref="incidentSubTypeDAO"></beans:property>
+		<beans:property name="incidentProgressViewDAO" ref="incidentProgressViewDAO"></beans:property>
+		<beans:property name="notificationDAO" ref="notificationDAO"></beans:property>
+		<beans:property name="irtReminderDAO" ref="irtReminderDAO"></beans:property>
+		<beans:property name="irtUrgencyDAO" ref="irtUrgencyDAO"></beans:property>
+		<beans:property name="irtCloseReasonDAO" ref="irtCloseReasonDAO"></beans:property>
+		<beans:property name="irtImpactLevelDAO" ref="irtImpactLevelDAO"></beans:property>
+		<beans:property name="unitDAO" ref="unitDAO"></beans:property>
+		<beans:property name="faqDAO" ref="faqDAO"></beans:property>
+		<beans:property name="irtIncidentTxnDAO" ref="irtIncidentTxnDAO"></beans:property>
+		<beans:property name="irtImpactUrgencyDAO" ref="irtImpactUrgencyDAO"></beans:property>
+		<beans:property name="unitMemberTxnDAO" ref="unitMemberTxnDAO"></beans:property>
+		<beans:property name="incidentDetailViewDAO" ref="incidentDetailViewDAO"></beans:property>
+		<beans:property name="unitMemberDAO" ref="unitMemberDAO"></beans:property>
+		<beans:property name="incidentStatusDAO" ref="incidentStatusDAO"></beans:property>
+		<beans:property name="teamMemberViewDAO" ref="teamMemberViewDAO"></beans:property>
+		<beans:property name="employeeDetaliViewDAO" ref="employeeDetaliViewDAO"></beans:property>
+		<beans:property name="dependencyDAO" ref="dependencyDAO"></beans:property>
+		<beans:property name="vendorDAO" ref="vendorDAO"></beans:property>
+		<beans:property name="unitAssignHistoryViewDAO" ref="unitAssignHistoryViewDAO"></beans:property>
+		<beans:property name="vendorInformDetTxnDAO" ref="vendorInformDetTxnDAO"></beans:property>
+		<beans:property name="incidentUnitMemberViewDAO" ref="incidentUnitMemberViewDAO"></beans:property>
+	</beans:bean>
+	
+	<beans:bean id="reportService"
+		class="com.ucsc.mit.service.ReportService">
+		<beans:property name="incidentTxnDAO" ref="incidentTxnDAO"></beans:property>
+		<beans:property name="unitCloseReasonDAO" ref="unitCloseReasonDAO"></beans:property>
+		<beans:property name="originDAO" ref="originDAO"></beans:property>
+		<beans:property name="techAffectedAreaDAO" ref="techAffectedAreaDAO"></beans:property>
+		<beans:property name="priorotyDAO" ref="priorotyDAO"></beans:property>
+		<beans:property name="employeeDAO" ref="employeeDAO"></beans:property>
+		<beans:property name="branchDAO" ref="branchDAO"></beans:property>
+		<beans:property name="incidentTypeDAO" ref="incidentTypeDAO"></beans:property>
+		<beans:property name="incidentSubTypeDAO" ref="incidentSubTypeDAO"></beans:property>
+		<beans:property name="incidentProgressViewDAO" ref="incidentProgressViewDAO"></beans:property>
+		<beans:property name="notificationDAO" ref="notificationDAO"></beans:property>
+		<beans:property name="irtReminderDAO" ref="irtReminderDAO"></beans:property>
+		<beans:property name="irtUrgencyDAO" ref="irtUrgencyDAO"></beans:property>
+		<beans:property name="irtCloseReasonDAO" ref="irtCloseReasonDAO"></beans:property>
+		<beans:property name="irtImpactLevelDAO" ref="irtImpactLevelDAO"></beans:property>
+		<beans:property name="unitDAO" ref="unitDAO"></beans:property>
+		<beans:property name="faqDAO" ref="faqDAO"></beans:property>
+		<beans:property name="irtIncidentTxnDAO" ref="irtIncidentTxnDAO"></beans:property>
+		<beans:property name="irtImpactUrgencyDAO" ref="irtImpactUrgencyDAO"></beans:property>
+		<beans:property name="unitMemberTxnDAO" ref="unitMemberTxnDAO"></beans:property>
+		<beans:property name="incidentDetailViewDAO" ref="incidentDetailViewDAO"></beans:property>
+		<beans:property name="unitMemberDAO" ref="unitMemberDAO"></beans:property>
+		<beans:property name="incidentStatusDAO" ref="incidentStatusDAO"></beans:property>
+		<beans:property name="teamMemberViewDAO" ref="teamMemberViewDAO"></beans:property>
+		<beans:property name="reportsDAO" ref="reportsDAO"></beans:property>
+		<beans:property name="teamMemPreformaceViewDAO" ref="teamMemPreformaceViewDAO"></beans:property>
+		<beans:property name="vendorSummaryViewDAO" ref="vendorSummaryViewDAO"></beans:property>
+		<beans:property name="unitSummaryViewDAO" ref="unitSummaryViewDAO"></beans:property>
+		<beans:property name="incidentTicketViewDAO" ref="incidentTicketViewDAO"></beans:property>
+	</beans:bean>
+	
+	<beans:bean id="dependencytService"
+		class="com.ucsc.mit.service.DependencyService">
+		<beans:property name="incidentDetailViewDAO" ref="incidentDetailViewDAO"></beans:property>
+		<beans:property name="dependencyDAO" ref="dependencyDAO"></beans:property>
+		<beans:property name="vendorDAO" ref="vendorDAO"></beans:property>
+		<beans:property name="employeeDAO" ref="employeeDAO"></beans:property>
+		<beans:property name="unitMemberTxnDAO" ref="unitMemberTxnDAO"></beans:property>
+		<beans:property name="unitMemberDAO" ref="unitMemberDAO"></beans:property>
+		<beans:property name="unitDAO" ref="unitDAO"></beans:property>
+		<beans:property name="teamMemberViewDAO" ref="teamMemberViewDAO"></beans:property>
+		<beans:property name="irtUrgencyDAO" ref="irtUrgencyDAO"></beans:property>
+		<beans:property name="irtImpactLevelDAO" ref="irtImpactLevelDAO"></beans:property>
+		<beans:property name="priorotyDAO" ref="priorotyDAO"></beans:property>
+		<beans:property name="notificationDAO" ref="notificationDAO"></beans:property>
+	</beans:bean>
+	
+	<beans:bean id="notificationService"
+		class="com.ucsc.mit.service.NotificationService">
+		<beans:property name="employeeDAO" ref="employeeDAO"></beans:property>
+		<beans:property name="notificationDAO" ref="notificationDAO"></beans:property>
+		<beans:property name="notifyLastSeenDAO" ref="notifyLastSeenDAO"></beans:property>
+		<beans:property name="irtMemberDAO" ref="irtMemberDAO"></beans:property>
+	</beans:bean>
+	
+	<context:component-scan base-package="com.ucsc.mit" />
+
+<!-- 	<tx:annotation-driven transaction-manager="transactionManager" /> -->
+
+<!-- 	<beans:bean id="transactionManager" -->
+<!-- 		class="org.springframework.orm.hibernate4.HibernateTransactionManager"> -->
+<!-- 		<beans:property name="sessionFactory" -->
+<!-- 			ref="hibernate4AnnotatedSessionFactory" /> -->
+<!-- 	</beans:bean> -->
+
+</beans:beans>
