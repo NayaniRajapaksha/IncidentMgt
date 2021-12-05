@@ -1,0 +1,33 @@
+## General info
+This project is incident management system.
+
+Following user names and passwords use for log in to the system
+User Name  - Password
+194902 		123
+194901		123
+19489		123
+19488		123
+194809		123
+194903		123
+194904		123
+194907		123
+194905		123
+194906		123
+
+
+
+## Technologies
+Project is created with:
+* Java version: 1.8
+* Tomcat Server version: 8.0
+* jasper library version: 6.16.0
+* mysql version: 5.1.47
+* primefaces library version: 6.1
+* spring-framework version: 4.0.3
+* hibernate version: 4.3.5.Final
+* jsf version: 2.2.10
+
+## Setup
+To run this project, install Eclipse Jee Neon 3 with Tomcat Server version 8.0 
+and mysql version: 5.1.47
+
